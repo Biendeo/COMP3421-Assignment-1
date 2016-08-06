@@ -76,34 +76,60 @@ public class MathUtil {
         return u;
     }
 
-
-
-    // ===========================================
-    // COMPLETE THE METHODS BELOW
-    // ===========================================
-    
-
     /**
-     * TODO: A 2D translation matrix for the given offset vector
+     * A 2D translation matrix for the given offset vector
      * 
-     * @param pos
+     * @param v The x and y translation coordinates {x, y}.
      * @return
+     * The translation matrix in the following form.
+     * [[1,0,x]
+     *  [0,1,y]
+     *  [0,0,1]]
      */
     public static double[][] translationMatrix(double[] v) {
+    	double[][] returnMatrix = new double[3][3];
 
-        return null;
+    	returnMatrix[0][0] = 1;
+    	returnMatrix[0][1] = 0;
+    	returnMatrix[0][2] = v[0];
+    	
+    	returnMatrix[1][0] = 0;
+    	returnMatrix[1][1] = 1;
+    	returnMatrix[1][2] = v[1];
+    	
+    	returnMatrix[2][0] = 0;
+    	returnMatrix[2][1] = 0;
+    	returnMatrix[2][2] = 1;
+    	
+    	return returnMatrix;
     }
 
     /**
-     * TODO: A 2D rotation matrix for the given angle
+     * A 2D rotation matrix for the given angle
      * 
      * @param angle in degrees
      * @return
+     * The rotation matrix in the following form.
+     * [[cos(a),-sin(a),0]
+     *  [sin(a), cos(a),0]
+     *  [     0,      0,1]]
      */
     public static double[][] rotationMatrix(double angle) {
+    	double[][] returnMatrix = new double[3][3];
 
-
-        return null;
+    	returnMatrix[0][0] = Math.cos(Math.toRadians(angle));
+    	returnMatrix[0][1] = -Math.sin(Math.toRadians(angle));
+    	returnMatrix[0][2] = 0;
+    	
+    	returnMatrix[1][0] = Math.sin(Math.toRadians(angle));
+    	returnMatrix[1][1] = Math.cos(Math.toRadians(angle));
+    	returnMatrix[1][2] = 0;
+    	
+    	returnMatrix[2][0] = 0;
+    	returnMatrix[2][1] = 0;
+    	returnMatrix[2][2] = 1;
+    	
+    	return returnMatrix;
     }
 
     /**
@@ -111,10 +137,27 @@ public class MathUtil {
      * 
      * @param scale
      * @return
+     * The scale matrix in the following form.
+     * [[scale,    0,0]
+     *  [    0,scale,0]
+     *  [    0,    0,1]]
      */
     public static double[][] scaleMatrix(double scale) {
+    	double[][] returnMatrix = new double[3][3];
 
-        return null;
+    	returnMatrix[0][0] = scale;
+    	returnMatrix[0][1] = 0;
+    	returnMatrix[0][2] = 0;
+    	
+    	returnMatrix[1][0] = 0;
+    	returnMatrix[1][1] = scale;
+    	returnMatrix[1][2] = 0;
+    	
+    	returnMatrix[2][0] = 0;
+    	returnMatrix[2][1] = 0;
+    	returnMatrix[2][2] = 1;
+    	
+    	return returnMatrix;
     }
 
     
