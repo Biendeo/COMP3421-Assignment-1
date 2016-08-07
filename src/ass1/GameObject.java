@@ -266,6 +266,21 @@ public class GameObject {
         // TODO: setting the model transform appropriately  
         // draw the object (Call drawSelf() to draw the object itself) 
         // and all its children recursively
+        
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glLoadIdentity();
+        
+        double[] globalPosition = getGlobalPosition();
+        double globalRotation = getGlobalRotation();
+        double globalScale = getGlobalScale();
+        
+        gl.glTranslated(globalPosition[0], globalPosition[1], 0.0);
+        gl.glRotated(globalRotation, 0.0, 0.0, 1.0);
+        gl.glScaled(globalScale, globalScale, 0.0);
+        
+        for (GameObject child : myChildren) {
+        	child.draw(gl);
+        }
        
         
     }
@@ -279,6 +294,18 @@ public class GameObject {
      */
     public double[] getGlobalPosition() {
         double[] p = new double[2];
+        
+        double[] parentGlobalPosition = ((this != GameObject.ROOT) ? myParent.getGlobalPosition() : new double[]{0, 0});
+        double parentGlobalRotation = ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0);
+        double parentGlobalScale = ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
+        
+        double[][] rotationMatrix = MathUtil.rotationMatrix(parentGlobalRotation);
+        
+        double[] newGlobalTranslation = MathUtil.multiply(rotationMatrix, new double[]{myTranslation[0], myTranslation[1], 0.0});
+        
+        p[0] = newGlobalTranslation[0] * parentGlobalScale + parentGlobalPosition[0];
+        p[1] = newGlobalTranslation[1] * parentGlobalScale + parentGlobalPosition[1];
+        
         return p; 
     }
 
@@ -291,7 +318,13 @@ public class GameObject {
      * normalized to the range (-180, 180) degrees. 
      */
     public double getGlobalRotation() {
-        return 0;
+    	// We start by grabbing the parent's rotation. If the parent doesn't exist, we set it as 0.
+        double globalRotation = ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0);
+        
+        // Then we add this object's rotation.
+        globalRotation = MathUtil.normaliseAngle(globalRotation + myRotation);
+        
+        return globalRotation;
     }
 
     /**
@@ -302,7 +335,13 @@ public class GameObject {
      * @return the global scale of the object 
      */
     public double getGlobalScale() {
-        return 1.0;
+    	// We start by grabbing the parent's scale. If the parent doesn't exist, we set it as 1.
+        double globalScale = ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
+        
+        // Then we multiply this object's scale.
+        globalScale *= myScale;
+        
+        return globalScale;
     }
 
     /**
@@ -315,10 +354,24 @@ public class GameObject {
      * @param parent
      */
     public void setParent(GameObject parent) {
+    	
+    	double[] globalPosition = getGlobalPosition();
+    	double globalRotation = getGlobalRotation();
+    	double globalScale = getGlobalScale();
         
         myParent.myChildren.remove(this);
         myParent = parent;
         myParent.myChildren.add(this);
+    	
+        double[] parentGlobalPosition = ((this != GameObject.ROOT) ? myParent.getGlobalPosition() : new double[]{0, 0});
+        double parentGlobalRotation = ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0);
+        double parentGlobalScale = ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
+
+        myTranslation[0] = ((globalPosition[0] - parentGlobalPosition[0]) * Math.cos(Math.toRadians(-parentGlobalRotation)) - (globalPosition[1] - parentGlobalPosition[1]) * Math.sin(Math.toRadians(-parentGlobalRotation))) / parentGlobalScale;
+        myTranslation[1] = ((globalPosition[0] - parentGlobalPosition[0]) * Math.sin(Math.toRadians(-parentGlobalRotation)) + (globalPosition[1] - parentGlobalPosition[1]) * Math.cos(Math.toRadians(-parentGlobalRotation))) / parentGlobalScale;
+        
+        myRotation = MathUtil.normaliseAngle(globalRotation - ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0));
+        myScale = globalScale / ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
         
     }
     
