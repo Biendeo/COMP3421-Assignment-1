@@ -99,7 +99,7 @@ public class CircularGameObject extends GameObject {
 	    	gl.glBegin(GL2.GL_POLYGON);
 
 	        for (int i = 0; i < sides; ++i) {
-	        	gl.glVertex2d(Math.sin(i * 2 * Math.PI / sides), Math.cos(i * 2 * Math.PI / sides));
+	        	gl.glVertex2d(Math.sin(i * 2 * Math.PI / sides) * myRadius, Math.cos(i * 2 * Math.PI / sides) * myRadius);
 	        }
 	        
 	        gl.glEnd();
@@ -111,7 +111,7 @@ public class CircularGameObject extends GameObject {
 	        gl.glBegin(GL2.GL_LINE_LOOP);
 	        
 	        for (int i = 0; i < sides; ++i) {
-	        	gl.glVertex2d(Math.sin(i * 2 * Math.PI / sides), Math.cos(i * 2 * Math.PI / sides));
+	        	gl.glVertex2d(Math.sin(i * 2 * Math.PI / sides) * myRadius, Math.cos(i * 2 * Math.PI / sides) * myRadius);
 	        }
 	        
 	        gl.glEnd();

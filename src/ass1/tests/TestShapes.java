@@ -79,7 +79,7 @@ public class TestShapes {
         // Put it in a window
         JFrame jFrame = new JFrame("Test Shapes");
         jFrame.add(panel);
-        jFrame.setSize(800, 800);
+        jFrame.setSize(400, 400);
         jFrame.setVisible(true);
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
