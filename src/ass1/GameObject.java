@@ -267,20 +267,19 @@ public class GameObject {
         // draw the object (Call drawSelf() to draw the object itself) 
         // and all its children recursively
         
-        gl.glMatrixMode(GL2.GL_MODELVIEW);
-        gl.glLoadIdentity();
+        gl.glPushMatrix();
+
+        gl.glTranslated(myTranslation[0], myTranslation[1], 0.0);
+        gl.glRotated(myRotation, 0.0, 0.0, 1.0);
+        gl.glScaled(myScale, myScale, 0.0);
         
-        double[] globalPosition = getGlobalPosition();
-        double globalRotation = getGlobalRotation();
-        double globalScale = getGlobalScale();
-        
-        gl.glTranslated(globalPosition[0], globalPosition[1], 0.0);
-        gl.glRotated(globalRotation, 0.0, 0.0, 1.0);
-        gl.glScaled(globalScale, globalScale, 0.0);
+        drawSelf(gl);
         
         for (GameObject child : myChildren) {
         	child.draw(gl);
         }
+        
+        gl.glPopMatrix();
        
         
     }

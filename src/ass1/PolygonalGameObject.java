@@ -114,8 +114,30 @@ public class PolygonalGameObject extends GameObject {
      */
     @Override
     public void drawSelf(GL2 gl) {
-
-        // TODO: Write this method
+    	
+    	if (myFillColour != null) {
+	    	gl.glColor4d(myFillColour[0], myFillColour[1], myFillColour[2], myFillColour[3]);
+	    	
+	    	gl.glBegin(GL2.GL_POLYGON);
+	    	
+	        for (int i = 0; i < myPoints.length; i += 2) {
+	        	gl.glVertex2d(myPoints[i], myPoints[i + 1]);
+	        }
+	        
+	        gl.glEnd();
+    	}
+        
+    	if (myLineColour != null) {
+	        gl.glColor4d(myLineColour[0], myLineColour[1], myLineColour[2], myLineColour[3]);
+	        
+	        gl.glBegin(GL2.GL_LINE_LOOP);
+	        
+	        for (int i = 0; i < myPoints.length; i += 2) {
+	        	gl.glVertex2d(myPoints[i], myPoints[i + 1]);
+	        }
+	        
+	        gl.glEnd();
+    	}
 
     }
 

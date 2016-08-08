@@ -41,15 +41,27 @@ public class Camera extends GameObject {
     public void setView(GL2 gl) {
         
         // TODO 1. clear the view to the background colour
+    	gl.glClearColor(myBackground[0], myBackground[1], myBackground[2], myBackground[3]);
+    	gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
         
-        // TODO 2. set the view matrix to account for the camera's position         
+        // TODO 2. set the view matrix to account for the camera's position
+    	gl.glMatrixMode(GL2.GL_MODELVIEW);
+    	gl.glLoadIdentity();
+    	
+    	double[] globalTranslate = getGlobalPosition();
+    	double globalRotate = getGlobalRotation();
+    	double globalScale = getGlobalScale();
+    	
+    	gl.glScaled(1.0 / globalScale, 1.0 / globalScale, 1.0);
+    	gl.glRotated(-globalRotate, 0.0, 0.0, 1.0);
+    	gl.glTranslated(-globalTranslate[0], -globalTranslate[1], 0.0);
     }
 
     public void reshape(GL2 gl, int x, int y, int width, int height) {
         
         // match the projection aspect ratio to the viewport
         // to avoid stretching
-        
+    	
         gl.glMatrixMode(GL2.GL_PROJECTION);
         gl.glLoadIdentity();
 
