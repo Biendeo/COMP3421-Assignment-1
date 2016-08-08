@@ -31,22 +31,18 @@ public class TestShapes {
         c.setPosition(1, -1);  
         c.setScale(0.5);  
        
-        /*
         //Create a line
         double lineCol [] = {0.5,1,0.5,1};
         LineGameObject l = new LineGameObject(GameObject.ROOT,0.5,0.5,1,1,lineCol);
        
-
         //Create a line that is a child of polygon p
         double lineCol2 []= {0.5,0.5,1,1};
         LineGameObject l2 = new LineGameObject(p,lineCol2);     
         l2.setPosition(-1, 0);
       
-    
         //Create a circle that is a child of line l2       
         CircularGameObject c2 = new CircularGameObject(p,0.25,white,white);     
         c2.translate(-1,0);
-       */
       
 	}
    
