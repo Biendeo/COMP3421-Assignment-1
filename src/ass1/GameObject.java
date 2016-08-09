@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.jogamp.opengl.GL2;
 
+import ass1.math.Vector3;
+
 
 
 
@@ -33,9 +35,9 @@ public class GameObject {
 
     // the local transformation
     //myRotation should be normalised to the range (-180..180)
-    private double myRotation;
-    private double myScale;
-    private double[] myTranslation;
+    private Vector3 myRotation;
+    private Vector3 myScale;
+    private Vector3 myTranslation;
     
     // is this part of the tree showing?
     private boolean amShowing;
@@ -47,11 +49,9 @@ public class GameObject {
         myParent = null;
         myChildren = new ArrayList<GameObject>();
 
-        myRotation = 0;
-        myScale = 1;
-        myTranslation = new double[2];
-        myTranslation[0] = 0;
-        myTranslation[1] = 0;
+        myRotation = new Vector3();
+        myScale = new Vector3(1.0, 1.0, 1.0);
+        myTranslation = new Vector3();
 
         amShowing = true;
         
@@ -66,21 +66,9 @@ public class GameObject {
      * @param parent
      */
     public GameObject(GameObject parent) {
+    	this();
         myParent = parent;
-        myChildren = new ArrayList<GameObject>();
-
         parent.myChildren.add(this);
-
-        myRotation = 0;
-        myScale = 1;
-        myTranslation = new double[2];
-        myTranslation[0] = 0;
-        myTranslation[1] = 0;
-
-        // initially showing
-        amShowing = true;
-
-        ALL_OBJECTS.add(this);
     }
 
     /**
@@ -119,7 +107,7 @@ public class GameObject {
      * @return
      */
     public double getRotation() {
-        return myRotation;
+        return myRotation.z;
     }
 
     /**
@@ -128,7 +116,7 @@ public class GameObject {
      * @return
      */
     public void setRotation(double rotation) {
-        myRotation = MathUtil.normaliseAngle(rotation);
+        myRotation.z = MathUtil.normaliseAngle(rotation);
     }
 
     /**
@@ -137,46 +125,55 @@ public class GameObject {
      * @param angle
      */
     public void rotate(double angle) {
-        myRotation += angle;
-        myRotation = MathUtil.normaliseAngle(myRotation);
+        myRotation.z += angle;
+        myRotation.z = MathUtil.normaliseAngle(myRotation.z);
     }
 
     /**
      * Get the local scale
      * 
      * @return
+     * @deprecated Use {@link getScaleX} or something.
      */
     public double getScale() {
-        return myScale;
+        return myScale.x;
     }
 
     /**
      * Set the local scale
      * 
      * @param scale
+     * @deprecated Use {@link setScaleX} or something.
      */
     public void setScale(double scale) {
-        myScale = scale;
+    	// TODO: Handle all scaling on separate axes.
+        myScale.x = scale;
+        myScale.y = scale;
     }
 
     /**
      * Multiply the scale of the object by the given factor
      * 
      * @param factor
+     * @deprecated Use {@link scaleX} or something.
      */
     public void scale(double factor) {
-        myScale *= factor;
+    	// TODO: Handle all scaling on separate axes.
+        myScale.x *= factor;
+        myScale.y *= factor;
     }
 
     /**
      * Get the local position of the object 
      * 
      * @return
+     * @deprecated Use {@link getPosition3} or something.
      */
     public double[] getPosition() {
+    	// TODO: Make a Vector3 get.
         double[] t = new double[2];
-        t[0] = myTranslation[0];
-        t[1] = myTranslation[1];
+        t[0] = myTranslation.x;
+        t[1] = myTranslation.y;
 
         return t;
     }
@@ -188,8 +185,9 @@ public class GameObject {
      * @param y
      */
     public void setPosition(double x, double y) {
-        myTranslation[0] = x;
-        myTranslation[1] = y;
+    	// TODO: Make a Vector3 setPosition.
+        myTranslation.x = x;
+        myTranslation.y = y;
     }
 
     /**
@@ -199,8 +197,9 @@ public class GameObject {
      * @param dy
      */
     public void translate(double dx, double dy) {
-        myTranslation[0] += dx;
-        myTranslation[1] += dy;
+    	// TODO: Make a Vector3 translation.
+        myTranslation.x += dx;
+        myTranslation.y += dy;
     }
 
     /**
@@ -262,16 +261,13 @@ public class GameObject {
         if (!amShowing) {
             return;
         }
-
-        // TODO: setting the model transform appropriately  
-        // draw the object (Call drawSelf() to draw the object itself) 
-        // and all its children recursively
         
         gl.glPushMatrix();
 
-        gl.glTranslated(myTranslation[0], myTranslation[1], 0.0);
-        gl.glRotated(myRotation, 0.0, 0.0, 1.0);
-        gl.glScaled(myScale, myScale, 0.0);
+        // TODO: This.
+        gl.glTranslated(myTranslation.x, myTranslation.y, 0.0);
+        gl.glRotated(myRotation.z, 0.0, 0.0, 1.0);
+        gl.glScaled(myScale.x, myScale.y, 0.0);
         
         drawSelf(gl);
         
@@ -300,7 +296,7 @@ public class GameObject {
         
         double[][] rotationMatrix = MathUtil.rotationMatrix(parentGlobalRotation);
         
-        double[] newGlobalTranslation = MathUtil.multiply(rotationMatrix, new double[]{myTranslation[0], myTranslation[1], 0.0});
+        double[] newGlobalTranslation = MathUtil.multiply(rotationMatrix, new double[]{myTranslation.x, myTranslation.y, 0.0});
         
         p[0] = newGlobalTranslation[0] * parentGlobalScale + parentGlobalPosition[0];
         p[1] = newGlobalTranslation[1] * parentGlobalScale + parentGlobalPosition[1];
@@ -321,7 +317,7 @@ public class GameObject {
         double globalRotation = ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0);
         
         // Then we add this object's rotation.
-        globalRotation = MathUtil.normaliseAngle(globalRotation + myRotation);
+        globalRotation = MathUtil.normaliseAngle(globalRotation + myRotation.z);
         
         return globalRotation;
     }
@@ -338,7 +334,7 @@ public class GameObject {
         double globalScale = ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
         
         // Then we multiply this object's scale.
-        globalScale *= myScale;
+        globalScale *= myScale.x;
         
         return globalScale;
     }
@@ -366,11 +362,11 @@ public class GameObject {
         double parentGlobalRotation = ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0);
         double parentGlobalScale = ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
 
-        myTranslation[0] = ((globalPosition[0] - parentGlobalPosition[0]) * Math.cos(Math.toRadians(-parentGlobalRotation)) - (globalPosition[1] - parentGlobalPosition[1]) * Math.sin(Math.toRadians(-parentGlobalRotation))) / parentGlobalScale;
-        myTranslation[1] = ((globalPosition[0] - parentGlobalPosition[0]) * Math.sin(Math.toRadians(-parentGlobalRotation)) + (globalPosition[1] - parentGlobalPosition[1]) * Math.cos(Math.toRadians(-parentGlobalRotation))) / parentGlobalScale;
+        myTranslation.x = ((globalPosition[0] - parentGlobalPosition[0]) * Math.cos(Math.toRadians(-parentGlobalRotation)) - (globalPosition[1] - parentGlobalPosition[1]) * Math.sin(Math.toRadians(-parentGlobalRotation))) / parentGlobalScale;
+        myTranslation.y = ((globalPosition[0] - parentGlobalPosition[0]) * Math.sin(Math.toRadians(-parentGlobalRotation)) + (globalPosition[1] - parentGlobalPosition[1]) * Math.cos(Math.toRadians(-parentGlobalRotation))) / parentGlobalScale;
         
-        myRotation = MathUtil.normaliseAngle(globalRotation - ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0));
-        myScale = globalScale / ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
+        myRotation.z = MathUtil.normaliseAngle(globalRotation - ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0));
+        myScale.y = myScale.x = globalScale / ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
         
     }
     
