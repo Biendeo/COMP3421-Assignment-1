@@ -43,7 +43,9 @@ public class TestShapes {
         //Create a circle that is a child of line l2       
         CircularGameObject c2 = new CircularGameObject(p,0.25,white,white);     
         c2.translate(-1,0);
-      
+        
+        MyCoolGameObject o1 = new MyCoolGameObject(GameObject.ROOT, new double[]{0.8, 0.2, 0.2, 1.0}, new double[]{0.6, 0.1, 0.1, 1.0});
+        o1.translate(-1.5, 1.0);
 	}
    
     /**
