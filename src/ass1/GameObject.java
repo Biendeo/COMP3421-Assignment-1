@@ -385,10 +385,9 @@ public class GameObject {
     /**
      * Compute the object's rotation in the global coordinate frame
      * 
-     * TODO: Write this method
-     * 
      * @return the global rotation of the object (in degrees) and 
      * normalized to the range (-180, 180) degrees. 
+     * @deprecated Use {@link #getGlobalRotationVector()}.z instead.
      */
     public double getGlobalRotation() {
     	// We start by grabbing the parent's rotation. If the parent doesn't exist, we set it as 0.
@@ -400,9 +399,34 @@ public class GameObject {
         return globalRotation;
     }
     
+    /**
+     * Compute the object's rotation in the global coordinate frame.
+     * 
+     * @return The global rotation of the object (in an Euler angle Vector3) and
+     * normalized to the range given by Java's math libraries.
+     */
     public Vector3 getGlobalRotationVector() {
-    	// TODO: This.
-    	return null;
+    	if (this == GameObject.ROOT) {
+    		return myRotation.clone();
+    	} else {
+    		double[][] globalRotationMatrix = MathUtil.rotationMatrixXYZ(myParent.getRotationVector());
+    		double[][] rotationMatrix = MathUtil.rotationMatrixXYZ(getRotationVector());
+    		
+    		double[][] multipliedMatrix = MathUtil.multiply4D(rotationMatrix, globalRotationMatrix);
+    		
+    		// These will be in radians.
+    		if (multipliedMatrix[0][0] == 1.0 || multipliedMatrix[0][0] == -1.0) {
+    			double x = 0;
+    			double y = 0;
+    			double z = Math.atan2(multipliedMatrix[0][2], multipliedMatrix[2][3]);
+    			return new Vector3(x, y, z);
+    		} else {
+    			double x = Math.atan2(-multipliedMatrix[1][2], multipliedMatrix[1][1]);
+    			double y = Math.asin(multipliedMatrix[1][0]);
+    			double z = Math.atan2(-multipliedMatrix[2][0], multipliedMatrix[0][0]);
+    			return new Vector3(x, y, z);
+    		}
+    	}
     }
 
     /**
@@ -431,10 +455,6 @@ public class GameObject {
 
     /**
      * Change the parent of a game object.
-     * 
-     * TODO: add code so that the object does not change its global position, rotation or scale
-     * when it is reparented. You may need to add code before and/or after 
-     * the fragment of code that has been provided - depending on your approach
      * 
      * @param parent
      */

@@ -56,6 +56,27 @@ public class MathUtil {
 
         return m;
     }
+    
+    /**
+     * Multiply two matrices
+     * @param p A 4x4 matrix
+     * @param q A 4x4 matrix
+     * @return
+     */
+    public static double[][] multiply4D(double[][] p, double[][] q) {
+    	double[][] m = new double[4][4];
+    	
+    	for (int i = 0; i < 4; ++i) {
+    		for (int j = 0; j < 4; ++j) {
+    			m[i][j] = 0;
+    			for (int k = 0; k < 4; ++k) {
+    				m[i][j] += p[i][k] * q[k][j];
+    			}
+    		}
+    	}
+    	
+    	return m;
+    }
 
     /**
      * Multiply a vector by a matrix
@@ -106,8 +127,40 @@ public class MathUtil {
     	return returnMatrix;
     }
     
+    /**
+     * A 3D translation matrix for the given offset vector.
+     * @param v The x, y, and z translation coordinates.
+     * @return
+     * The translation matrix in the following form.
+     * [[1,0,0,x]
+     *  [0,1,0,y]
+     *  [0,0,1,z]
+     *  [0,0,0,1]]
+     */
     public static double[][] translationMatrix(Vector3 v) {
-    	return null;
+    	double[][] returnMatrix = new double[4][4];
+
+    	returnMatrix[0][0] = 1;
+    	returnMatrix[0][1] = 0;
+    	returnMatrix[0][2] = 0;
+    	returnMatrix[0][3] = v.x;
+    	
+    	returnMatrix[1][0] = 0;
+    	returnMatrix[1][1] = 1;
+    	returnMatrix[1][2] = 0;
+    	returnMatrix[1][3] = v.y;
+    	
+    	returnMatrix[2][0] = 0;
+    	returnMatrix[2][1] = 0;
+    	returnMatrix[2][2] = 1;
+    	returnMatrix[2][3] = v.z;
+    	
+    	returnMatrix[3][0] = 0;
+    	returnMatrix[3][1] = 0;
+    	returnMatrix[3][2] = 0;
+    	returnMatrix[3][3] = 1;
+    	
+    	return returnMatrix;
     }
 
     /**
@@ -137,9 +190,90 @@ public class MathUtil {
     	
     	return returnMatrix;
     }
+    
+    public static double[][] rotationMatrixXYZ(Vector3 rotation) {
+    	return MathUtil.multiply4D(MathUtil.multiply4D(MathUtil.rotationMatrixX(rotation.x), MathUtil.rotationMatrixY(rotation.y)), MathUtil.rotationMatrixZ(rotation.z));
+    }
+    
+    public static double[][] rotationMatrixX(double xAngle) {
+    	double[][] returnMatrix = new double[4][4];
+
+    	returnMatrix[0][0] = 1;
+    	returnMatrix[0][1] = 0;
+    	returnMatrix[0][2] = 0;
+    	returnMatrix[0][3] = 0;
+    	
+    	returnMatrix[1][0] = 0;
+    	returnMatrix[1][1] = Math.cos(Math.toDegrees(xAngle));
+    	returnMatrix[1][2] = -Math.sin(Math.toDegrees(xAngle));
+    	returnMatrix[1][3] = 0;
+    	
+    	returnMatrix[2][0] = 0;
+    	returnMatrix[2][1] = Math.sin(Math.toDegrees(xAngle));
+    	returnMatrix[2][2] = Math.cos(Math.toDegrees(xAngle));
+    	returnMatrix[2][3] = 0;
+    	
+    	returnMatrix[3][0] = 0;
+    	returnMatrix[3][1] = 0;
+    	returnMatrix[3][2] = 0;
+    	returnMatrix[3][3] = 1;
+    	
+    	return returnMatrix;
+    }
+    
+    public static double[][] rotationMatrixY(double yAngle) {
+    	double[][] returnMatrix = new double[4][4];
+
+    	returnMatrix[0][0] = Math.cos(Math.toDegrees(yAngle));
+    	returnMatrix[0][1] = 0;
+    	returnMatrix[0][2] = Math.sin(Math.toDegrees(yAngle));
+    	returnMatrix[0][3] = 0;
+    	
+    	returnMatrix[1][0] = 0;
+    	returnMatrix[1][1] = 1;
+    	returnMatrix[1][2] = 0;
+    	returnMatrix[1][3] = 0;
+    	
+    	returnMatrix[2][0] = -Math.sin(Math.toDegrees(yAngle));
+    	returnMatrix[2][1] = 0;
+    	returnMatrix[2][2] = Math.cos(Math.toDegrees(yAngle));
+    	returnMatrix[2][3] = 0;
+    	
+    	returnMatrix[3][0] = 0;
+    	returnMatrix[3][1] = 0;
+    	returnMatrix[3][2] = 0;
+    	returnMatrix[3][3] = 1;
+    	
+    	return returnMatrix;
+    }
+    
+    public static double[][] rotationMatrixZ(double zAngle) {
+    	double[][] returnMatrix = new double[4][4];
+
+    	returnMatrix[0][0] = Math.cos(Math.toDegrees(zAngle));
+    	returnMatrix[0][1] = -Math.sin(Math.toDegrees(zAngle));
+    	returnMatrix[0][2] = 0;
+    	returnMatrix[0][3] = 0;
+    	
+    	returnMatrix[1][0] = Math.sin(Math.toDegrees(zAngle));
+    	returnMatrix[1][1] = Math.cos(Math.toDegrees(zAngle));
+    	returnMatrix[1][2] = 0;
+    	returnMatrix[1][3] = 0;
+    	
+    	returnMatrix[2][0] = 0;
+    	returnMatrix[2][1] = 0;
+    	returnMatrix[2][2] = 1;
+    	returnMatrix[2][3] = 0;
+    	
+    	returnMatrix[3][0] = 0;
+    	returnMatrix[3][1] = 0;
+    	returnMatrix[3][2] = 0;
+    	returnMatrix[3][3] = 1;
+    	
+    	return returnMatrix;
+    }
 
     /**
-     * TODO: A 2D scale matrix that scales both axes by the same factor
      * 
      * @param scale
      * @return
@@ -162,6 +296,32 @@ public class MathUtil {
     	returnMatrix[2][0] = 0;
     	returnMatrix[2][1] = 0;
     	returnMatrix[2][2] = 1;
+    	
+    	return returnMatrix;
+    }
+    
+    public static double[][] scaleMatrix(Vector3 scale) {
+    	double[][] returnMatrix = new double[4][4];
+
+    	returnMatrix[0][0] = scale.x;
+    	returnMatrix[0][1] = 0;
+    	returnMatrix[0][2] = 0;
+    	returnMatrix[0][3] = 0;
+    	
+    	returnMatrix[1][0] = 0;
+    	returnMatrix[1][1] = scale.y;
+    	returnMatrix[1][2] = 0;
+    	returnMatrix[1][3] = 0;
+    	
+    	returnMatrix[2][0] = 0;
+    	returnMatrix[2][1] = 0;
+    	returnMatrix[2][2] = scale.z;
+    	returnMatrix[2][3] = 0;
+    	
+    	returnMatrix[3][0] = 0;
+    	returnMatrix[3][1] = 0;
+    	returnMatrix[3][2] = 0;
+    	returnMatrix[3][3] = 1;
     	
     	return returnMatrix;
     }
