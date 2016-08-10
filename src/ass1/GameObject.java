@@ -237,7 +237,6 @@ public class GameObject {
      * @param y
      */
     public void setPosition(double x, double y) {
-    	// TODO: Make a Vector3 setPosition.
         myTranslation.x = x;
         myTranslation.y = y;
     }
@@ -258,7 +257,6 @@ public class GameObject {
      * @param dy
      */
     public void translate(double dx, double dy) {
-    	// TODO: Make a Vector3 translation.
         myTranslation.x += dx;
         myTranslation.y += dy;
     }

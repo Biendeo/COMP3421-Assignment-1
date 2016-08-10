@@ -3,7 +3,7 @@ package ass1.tests;
 import org.junit.Test;
 
 import ass1.GameObject;
-
+import ass1.math.Vector3;
 import junit.framework.TestCase;
 
 /**
@@ -219,38 +219,38 @@ public class GameObjectTest extends TestCase {
         double gr = obj1.getGlobalRotation();
         double gs = obj1.getGlobalScale();
                 
-        double [] p = obj1.getPosition();
-        double r = obj1.getRotation();
-        double s = obj1.getScale();
+        Vector3 p = obj1.getPositionVector();
+        Vector3 r = obj1.getRotationVector();
+        Vector3 s = obj1.getScaleVector();
         
         assertEquals(1, gp[0], EPSILON);
         assertEquals(0, gp[1], EPSILON);
         assertEquals(90, gr, EPSILON);
         assertEquals(1, gs, EPSILON);     
         
-        assertEquals(1, p[0], EPSILON);
-        assertEquals(0, p[1], EPSILON);
-        assertEquals(90, r, EPSILON);
-        assertEquals(1, s, EPSILON);     
+        assertEquals(1, p.x, EPSILON);
+        assertEquals(0, p.y, EPSILON);
+        assertEquals(90, r.z, EPSILON);
+        assertEquals(1, s.x, EPSILON);     
         
         //Test obj2
         gp = obj2.getGlobalPosition();
         gr = obj2.getGlobalRotation();
         gs = obj2.getGlobalScale();
                 
-        p = obj2.getPosition();
-        r = obj2.getRotation();
-        s = obj2.getScale();
+        p = obj2.getPositionVector();
+        r = obj2.getRotationVector();
+        s = obj2.getScaleVector();
         
         assertEquals(-1, gp[0], EPSILON);
         assertEquals(-1, gp[1], EPSILON);
         assertEquals(-45, gr, EPSILON);
         assertEquals(2, gs, EPSILON);     
         
-        assertEquals(-1, p[0], EPSILON);
-        assertEquals(-1, p[1], EPSILON);
-        assertEquals(-45, r, EPSILON);
-        assertEquals(2, s, EPSILON);     
+        assertEquals(-1, p.x, EPSILON);
+        assertEquals(-1, p.y, EPSILON);
+        assertEquals(-45, r.z, EPSILON);
+        assertEquals(2, s.x, EPSILON);     
         
        
         //Test obj3
@@ -258,19 +258,19 @@ public class GameObjectTest extends TestCase {
         gr = obj3.getGlobalRotation();
         gs = obj3.getGlobalScale();
                 
-        p = obj3.getPosition();
-        r = obj3.getRotation();
-        s = obj3.getScale();
+        p = obj3.getPositionVector();
+        r = obj3.getRotationVector();
+        s = obj3.getScaleVector();
         
         assertEquals(1, gp[0], EPSILON);
         assertEquals(1, gp[1], EPSILON);
         assertEquals(150, gr, EPSILON);
         assertEquals(4, gs, EPSILON);     
         
-        assertEquals(1, p[0], EPSILON);
-        assertEquals(0, p[1], EPSILON);
-        assertEquals(60, r, EPSILON);
-        assertEquals(4, s, EPSILON);     
+        assertEquals(1, p.x, EPSILON);
+        assertEquals(0, p.y, EPSILON);
+        assertEquals(60, r.z, EPSILON);
+        assertEquals(4, s.x, EPSILON);     
        
         //Change obj3
         obj3.setParent(obj2);
@@ -287,26 +287,26 @@ public class GameObjectTest extends TestCase {
 
         // obj2's local coordinate frame is adjusted to suit
         
-        p = obj3.getPosition();
-        r = obj3.getRotation();
-        s = obj3.getScale();
+        p = obj3.getPositionVector();
+        r = obj3.getRotationVector();
+        s = obj3.getScaleVector();
         
-        assertEquals(0, p[0], EPSILON);
-        assertEquals(1.41421, p[1], EPSILON);
+        assertEquals(0, p.x, EPSILON);
+        assertEquals(1.41421, p.y, EPSILON);
         //195 normalized is -165
-        assertEquals(-165, r, EPSILON);
-        assertEquals(2, s, EPSILON);        
+        assertEquals(-165, r.z, EPSILON);
+        assertEquals(2, s.x, EPSILON);        
 
         // obj1's local coordinate frame is not affected
         
-        p = obj1.getPosition();
-        r = obj1.getRotation();
-        s = obj1.getScale();
+        p = obj1.getPositionVector();
+        r = obj1.getRotationVector();
+        s = obj1.getScaleVector();
         
-        assertEquals(1, p[0], EPSILON);
-        assertEquals(0, p[1], EPSILON);
-        assertEquals(90, r, EPSILON);
-        assertEquals(1, s, EPSILON);      
+        assertEquals(1, p.x, EPSILON);
+        assertEquals(0, p.y, EPSILON);
+        assertEquals(90, r.z, EPSILON);
+        assertEquals(1, s.x, EPSILON);      
         
     }
     
