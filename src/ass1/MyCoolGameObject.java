@@ -2,6 +2,8 @@ package ass1;
 
 import com.jogamp.opengl.GL2;
 
+import ass1.math.Vector3;
+
 public class MyCoolGameObject extends CircularGameObject {
 
 	private static final double[] leftEarVertices = {-0.2, 0.0, 0.2, 0.0, 0.0, 0.5};
@@ -17,17 +19,17 @@ public class MyCoolGameObject extends CircularGameObject {
         super(parent, 0.7, fillColor, outlineColor);
 
         leftEar = new PolygonalGameObject(this, leftEarVertices, fillColor, outlineColor);
-        leftEar.translate(-0.4, 0.4);
+        leftEar.translate(new Vector3(-0.4, 0.4, 0.1));
         
         rightEar = new PolygonalGameObject(this, rightEarVertices, fillColor, outlineColor);
-        rightEar.translate(0.4, 0.4);
+        rightEar.translate(new Vector3(0.4, 0.4, 0.1));
         
         leftEye = new CircularGameObject(this, eyeColor, null);
-        leftEye.translate(-0.25, 0.2);
+        leftEye.translate(new Vector3(-0.25, 0.2, 0.1));
         leftEye.scale(0.2);
         
         rightEye = new CircularGameObject(this, eyeColor, null);
-        rightEye.translate(0.25, 0.2);
+        rightEye.translate(new Vector3(0.25, 0.2, 0.1));
         rightEye.scale(0.2);
     }
 

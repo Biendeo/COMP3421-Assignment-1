@@ -1,5 +1,7 @@
 package ass1;
 
+import ass1.math.Vector3;
+
 /**
  * A collection of useful math methods 
  *
@@ -102,6 +104,10 @@ public class MathUtil {
     	returnMatrix[2][2] = 1;
     	
     	return returnMatrix;
+    }
+    
+    public static double[][] translationMatrix(Vector3 v) {
+    	return null;
     }
 
     /**

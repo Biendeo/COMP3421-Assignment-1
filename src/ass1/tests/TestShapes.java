@@ -9,6 +9,7 @@ import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
 
 import ass1.*;
+import ass1.math.Vector3;
 
 /**
  * A simple test class for assignment1
@@ -43,9 +44,11 @@ public class TestShapes {
         //Create a circle that is a child of line l2       
         CircularGameObject c2 = new CircularGameObject(p,0.25,white,white);     
         c2.translate(-1,0);
-        
+
         MyCoolGameObject o1 = new MyCoolGameObject(GameObject.ROOT, new double[]{0.8, 0.2, 0.2, 1.0}, new double[]{0.6, 0.1, 0.1, 1.0});
         o1.translate(-1.5, 1.0);
+        MyCoolGameObject o2 = new MyCoolGameObject(GameObject.ROOT, new double[]{0.5, 0.2, 0.2, 1.0}, new double[]{0.6, 0.1, 0.1, 1.0});
+        o2.translate(new Vector3(-1.3, 0.8, -0.5));
 	}
    
     /**
@@ -65,6 +68,7 @@ public class TestShapes {
 
         // Create a camera
         Camera camera = new Camera(GameObject.ROOT);
+        camera.enableDepthBuffer(); // This enables drawing objects on top of other objects.
         camera.setScale(2); // scale up the camera so we can see more of the world  
               
         createTestShapes();

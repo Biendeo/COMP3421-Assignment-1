@@ -332,11 +332,11 @@ public class GameObject {
         
         gl.glPushMatrix();
 
-        gl.glTranslated(myTranslation.x, myTranslation.y, 0.0);
+        gl.glTranslated(myTranslation.x, myTranslation.y, myTranslation.z);
         gl.glRotated(myRotation.x, 1.0, 0.0, 0.0);
         gl.glRotated(myRotation.y, 0.0, 1.0, 0.0);
         gl.glRotated(myRotation.z, 0.0, 0.0, 1.0);
-        gl.glScaled(myScale.x, myScale.y, 0.0);
+        gl.glScaled(myScale.x, myScale.y, myScale.z);
         
         drawSelf(gl);
         
