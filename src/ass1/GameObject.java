@@ -105,9 +105,18 @@ public class GameObject {
      * Get the local rotation (in degrees)
      * 
      * @return
+     * @deprecated Use {@link #getRotationVector()} instead.
      */
     public double getRotation() {
         return myRotation.z;
+    }
+    
+    /**
+     * Get the local rotation (in degrees).
+     * @return
+     */
+    public Vector3 getRotationVector() {
+    	return myRotation.clone();
     }
 
     /**
@@ -117,6 +126,15 @@ public class GameObject {
      */
     public void setRotation(double rotation) {
         myRotation.z = MathUtil.normaliseAngle(rotation);
+    }
+    
+    /**
+     * Set the local rotation (in degrees)
+     * 
+     * @param rotation
+     */
+    public void setRotationVector(Vector3 rotation) {
+    	myRotation = rotation.clone();
     }
 
     /**
@@ -133,49 +151,83 @@ public class GameObject {
      * Get the local scale
      * 
      * @return
-     * @deprecated Use {@link getScaleX} or something.
+     * @deprecated Use {@link #getScaleVector()}.
      */
     public double getScale() {
         return myScale.x;
+    }
+    
+    /**
+     * Get the local scale.
+     * 
+     * @return
+     */
+    public Vector3 getScaleVector() {
+    	return myScale.clone();
     }
 
     /**
      * Set the local scale
      * 
      * @param scale
-     * @deprecated Use {@link setScaleX} or something.
+     * @deprecated Use {@link #setScale(Vector3)}.
      */
     public void setScale(double scale) {
-    	// TODO: Handle all scaling on separate axes.
         myScale.x = scale;
         myScale.y = scale;
+    }
+    
+    /**
+     * Set the local scale
+     * 
+     * @param scale
+     */
+    public void setScale(Vector3 scale) {
+    	myScale = scale.clone();
     }
 
     /**
      * Multiply the scale of the object by the given factor
      * 
      * @param factor
-     * @deprecated Use {@link scaleX} or something.
      */
     public void scale(double factor) {
-    	// TODO: Handle all scaling on separate axes.
         myScale.x *= factor;
         myScale.y *= factor;
+    }
+    
+    /**
+     * Multiply the scale of the object by the given factor
+     * 
+     * @param factor
+     */
+    public void scale(Vector3 factor) {
+    	myScale.x *= factor.x;
+    	myScale.y *= factor.y;
+    	myScale.z *= factor.z;
     }
 
     /**
      * Get the local position of the object 
      * 
      * @return
-     * @deprecated Use {@link getPosition3} or something.
+     * @deprecated Use {@link #getPositionVector()}.
      */
     public double[] getPosition() {
-    	// TODO: Make a Vector3 get.
         double[] t = new double[2];
         t[0] = myTranslation.x;
         t[1] = myTranslation.y;
 
         return t;
+    }
+    
+    /**
+     * Get the local position of the object
+     * 
+     * @return
+     */
+    public Vector3 getPositionVector() {
+    	return myTranslation.clone();
     }
 
     /**
@@ -189,6 +241,15 @@ public class GameObject {
         myTranslation.x = x;
         myTranslation.y = y;
     }
+    
+    /**
+     * Set the local position of the object
+     * 
+     * @param v
+     */
+    public void setPosition(Vector3 v) {
+    	myTranslation = v.clone();
+    }
 
     /**
      * Move the object by the specified offset in local coordinates
@@ -200,6 +261,15 @@ public class GameObject {
     	// TODO: Make a Vector3 translation.
         myTranslation.x += dx;
         myTranslation.y += dy;
+    }
+    
+    /**
+     * Move the object by the specified offset in local coordinates
+     * 
+     * @param v
+     */
+    public void translate(Vector3 v) {
+    	myTranslation.addSelf(v);
     }
 
     /**
@@ -264,8 +334,9 @@ public class GameObject {
         
         gl.glPushMatrix();
 
-        // TODO: This.
         gl.glTranslated(myTranslation.x, myTranslation.y, 0.0);
+        gl.glRotated(myRotation.x, 1.0, 0.0, 0.0);
+        gl.glRotated(myRotation.y, 0.0, 1.0, 0.0);
         gl.glRotated(myRotation.z, 0.0, 0.0, 1.0);
         gl.glScaled(myScale.x, myScale.y, 0.0);
         
@@ -303,6 +374,15 @@ public class GameObject {
         
         return p; 
     }
+    
+    /**
+     * Compute the object's position
+     * @return
+     */
+    public Vector3 getGlobalPositionVector3() {
+    	// TODO: This.
+    	return null;
+    }
 
     /**
      * Compute the object's rotation in the global coordinate frame
@@ -321,6 +401,11 @@ public class GameObject {
         
         return globalRotation;
     }
+    
+    public Vector3 getGlobalRotationVector() {
+    	// TODO: This.
+    	return null;
+    }
 
     /**
      * Compute the object's scale in global terms
@@ -338,6 +423,13 @@ public class GameObject {
         
         return globalScale;
     }
+    
+    public Vector3 getGlobalScaleVector() {
+    	// TODO: This.
+    	return null;
+    }
+    
+    
 
     /**
      * Change the parent of a game object.
@@ -349,6 +441,8 @@ public class GameObject {
      * @param parent
      */
     public void setParent(GameObject parent) {
+    	
+    	// TODO: Change this to Vector3.
     	
     	double[] globalPosition = getGlobalPosition();
     	double globalRotation = getGlobalRotation();

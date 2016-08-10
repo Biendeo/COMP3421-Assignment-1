@@ -19,6 +19,24 @@ public class Vector3 {
 		this.z = z;
 	}
 	
+	public Vector3 clone() {
+		Vector3 returnVector = new Vector3();
+		returnVector.x = x;
+		returnVector.y = y;
+		returnVector.z = z;
+		
+		return returnVector;
+	}
+	
+	public boolean equals(Object o) {
+		if (o == null || o.getClass() != this.getClass()) {
+			return false;
+		} else {
+			Vector3 v = (Vector3)o;
+			return (v.x == x && v.y == y && v.z == z);
+		}
+	}
+	
 	public Vector3 add(Vector3 v) {
 		return add(this, v);
 	}
