@@ -19,18 +19,23 @@ public class MyCoolGameObject extends CircularGameObject {
         super(parent, 0.7, fillColor, outlineColor);
 
         leftEar = new PolygonalGameObject(this, leftEarVertices, fillColor, outlineColor);
-        leftEar.translate(new Vector3(-0.4, 0.4, 0.1));
+        leftEar.translate(new Vector3(-0.4, 0.4, 0.001));
         
         rightEar = new PolygonalGameObject(this, rightEarVertices, fillColor, outlineColor);
-        rightEar.translate(new Vector3(0.4, 0.4, 0.1));
+        rightEar.translate(new Vector3(0.4, 0.4, 0.001));
         
         leftEye = new CircularGameObject(this, eyeColor, null);
-        leftEye.translate(new Vector3(-0.25, 0.2, 0.1));
+        leftEye.translate(new Vector3(-0.25, 0.2, 0.001));
         leftEye.scale(0.2);
         
         rightEye = new CircularGameObject(this, eyeColor, null);
-        rightEye.translate(new Vector3(0.25, 0.2, 0.1));
+        rightEye.translate(new Vector3(0.25, 0.2, 0.001));
         rightEye.scale(0.2);
+    }
+    
+    @Override
+    public void update(double dt) {
+    	rotate(new Vector3(0.0, dt * 50, 0.0));
     }
 
 

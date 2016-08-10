@@ -141,17 +141,28 @@ public class GameObject {
      * Rotate the object by the given angle (in degrees)
      * 
      * @param angle
+     * @deprecated Use {@link #rotate(Vector3)} instead.
      */
     public void rotate(double angle) {
         myRotation.z += angle;
         myRotation.z = MathUtil.normaliseAngle(myRotation.z);
+    }
+    
+    /**
+     * Rotate the object by the given angle (in degrees)
+     * 
+     * @param angle
+     */
+    public void rotate(Vector3 angle) {
+    	myRotation.addSelf(angle);
+    	//myRotation = MathUtil.rotationMatrixToVector(MathUtil.multiply4D(MathUtil.rotationMatrixXYZ(angle), MathUtil.rotationMatrixXYZ(myRotation)));
     }
 
     /**
      * Get the local scale
      * 
      * @return
-     * @deprecated Use {@link #getScaleVector()}.
+     * @deprecated Use {@link #getScaleVector()} instead.
      */
     public double getScale() {
         return myScale.x;
@@ -414,18 +425,7 @@ public class GameObject {
     		
     		double[][] multipliedMatrix = MathUtil.multiply4D(rotationMatrix, globalRotationMatrix);
     		
-    		// These will be in radians.
-    		if (multipliedMatrix[0][0] == 1.0 || multipliedMatrix[0][0] == -1.0) {
-    			double x = 0;
-    			double y = 0;
-    			double z = Math.atan2(multipliedMatrix[0][2], multipliedMatrix[2][3]);
-    			return new Vector3(x, y, z);
-    		} else {
-    			double x = Math.atan2(-multipliedMatrix[1][2], multipliedMatrix[1][1]);
-    			double y = Math.asin(multipliedMatrix[1][0]);
-    			double z = Math.atan2(-multipliedMatrix[2][0], multipliedMatrix[0][0]);
-    			return new Vector3(x, y, z);
-    		}
+    		return MathUtil.rotationMatrixToVector(multipliedMatrix);
     	}
     }
 

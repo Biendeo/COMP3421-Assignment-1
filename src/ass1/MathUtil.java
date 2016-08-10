@@ -272,6 +272,20 @@ public class MathUtil {
     	
     	return returnMatrix;
     }
+    
+    public static Vector3 rotationMatrixToVector(double[][] rotationMatrix) {
+		if (rotationMatrix[0][0] == 1.0 || rotationMatrix[0][0] == -1.0) {
+			double x = 0;
+			double y = 0;
+			double z = Math.toDegrees(Math.atan2(rotationMatrix[0][2], rotationMatrix[2][3]));
+			return new Vector3(x, y, z);
+		} else {
+			double x = Math.toDegrees(Math.atan2(-rotationMatrix[1][2], rotationMatrix[1][1]));
+			double y = Math.toDegrees(Math.asin(rotationMatrix[1][0]));
+			double z = Math.toDegrees(Math.atan2(-rotationMatrix[2][0], rotationMatrix[0][0]));
+			return new Vector3(x, y, z);
+		}
+    }
 
     /**
      * 
