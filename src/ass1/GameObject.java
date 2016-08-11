@@ -484,6 +484,7 @@ public class GameObject {
     public void setParent(GameObject parent) {
     	
     	// This is legacy from before I moved to 3D.
+    	/*
     	double[] globalPosition = getGlobalPosition();
     	double globalRotation = getGlobalRotation();
     	double globalScale = getGlobalScale();
@@ -501,7 +502,38 @@ public class GameObject {
         
         myRotation.z = MathUtil.normaliseAngle(globalRotation - ((this != GameObject.ROOT) ? myParent.getGlobalRotation() : 0.0));
         myScale.y = myScale.x = globalScale / ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
+        */
+    	
+    	// This uses 3D matrices.
+        Vector3 globalPosition = getGlobalPositionVector();
+        Vector3 globalRotation = getGlobalRotationVector();
+        Vector3 globalScale = getGlobalScaleVector();
         
+        myParent.myChildren.remove(this);
+        myParent = parent;
+        myParent.myChildren.add(this);
+        
+        Vector3 parentGlobalPosition = myParent.getGlobalPositionVector();
+        Vector3 parentGlobalRotation = myParent.getGlobalRotationVector();
+        Vector3 parentGlobalScale = myParent.getGlobalScaleVector();
+        
+        Vector3 globalPositionDifference = globalPosition.subtract(parentGlobalPosition);
+        
+        double[][] globalPositionDifferenceMatrix = MathUtil.translationMatrix(globalPositionDifference);
+
+        double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotation);
+        double[][] parentGlobalScaleMatrix = MathUtil.scaleMatrix(parentGlobalScale);
+        
+        double[][] globalScaledMatrix = MathUtil.multiply4D(parentGlobalScaleMatrix, globalPositionDifferenceMatrix);
+        
+        double[][] globalScaledRotatedMatrix = MathUtil.multiply4D(parentGlobalRotationMatrix, globalScaledMatrix);
+        
+        myTranslation = MathUtil.translationMatrixToVector(globalScaledRotatedMatrix);
+        
+        myRotation = globalRotation.subtract(parentGlobalRotation);
+        myScale.x = globalScale.x / parentGlobalScale.x;
+        myScale.y = globalScale.y / parentGlobalScale.y;
+        myScale.z = globalScale.z / parentGlobalScale.z;
     }
     
 
