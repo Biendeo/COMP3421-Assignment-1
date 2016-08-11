@@ -162,6 +162,13 @@ public class MathUtil {
     	
     	return returnMatrix;
     }
+    
+    public static Vector3 translationMatrixToVector(double[][] translationMatrix) {
+		double x = translationMatrix[0][3];
+		double y = translationMatrix[1][3];
+		double z = translationMatrix[2][3];
+		return new Vector3(x, y, z);
+    }
 
     /**
      * A 2D rotation matrix for the given angle
@@ -340,5 +347,11 @@ public class MathUtil {
     	return returnMatrix;
     }
 
+    public static Vector3 scaleMatrixToVector(double[][] scaleMatrix) {
+		double x = scaleMatrix[0][0];
+		double y = scaleMatrix[1][1];
+		double z = scaleMatrix[2][2];
+		return new Vector3(x, y, z);
+    }
     
 }

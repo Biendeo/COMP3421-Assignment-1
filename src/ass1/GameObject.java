@@ -203,8 +203,7 @@ public class GameObject {
      * @param factor
      */
     public void scale(double factor) {
-        myScale.x *= factor;
-        myScale.y *= factor;
+        myScale.multiplySelf(factor);
     }
     
     /**
@@ -388,7 +387,7 @@ public class GameObject {
      * Compute the object's position
      * @return
      */
-    public Vector3 getGlobalPositionVector3() {
+    public Vector3 getGlobalPositionVector() {
     	// TODO: This.
     	return null;
     }
@@ -420,7 +419,7 @@ public class GameObject {
     	if (this == GameObject.ROOT) {
     		return myRotation.clone();
     	} else {
-    		double[][] globalRotationMatrix = MathUtil.rotationMatrixXYZ(myParent.getRotationVector());
+    		double[][] globalRotationMatrix = MathUtil.rotationMatrixXYZ(myParent.getGlobalRotationVector());
     		double[][] rotationMatrix = MathUtil.rotationMatrixXYZ(getRotationVector());
     		
     		double[][] multipliedMatrix = MathUtil.multiply4D(rotationMatrix, globalRotationMatrix);
@@ -432,9 +431,9 @@ public class GameObject {
     /**
      * Compute the object's scale in global terms
      * 
-     * TODO: Write this method
-     * 
      * @return the global scale of the object 
+     * 
+     * @deprecated Use {@link #getGlobalScaleVector()}.
      */
     public double getGlobalScale() {
     	// We start by grabbing the parent's scale. If the parent doesn't exist, we set it as 1.
@@ -447,8 +446,16 @@ public class GameObject {
     }
     
     public Vector3 getGlobalScaleVector() {
-    	// TODO: This.
-    	return null;
+    	if (this == GameObject.ROOT) {
+    		return myScale.clone();
+    	} else {
+    		double[][] globalScaleMatrix = MathUtil.scaleMatrix(myParent.getGlobalScaleVector());
+    		double[][] scaleMatrix = MathUtil.scaleMatrix(getScaleVector());
+    		
+    		double[][] multipliedMatrix = MathUtil.multiply4D(scaleMatrix, globalScaleMatrix);
+    		
+    		return MathUtil.scaleMatrixToVector(multipliedMatrix);
+    	}
     }
     
     

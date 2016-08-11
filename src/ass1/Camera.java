@@ -3,6 +3,8 @@ package ass1;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.glu.GLU;
 
+import ass1.math.Vector3;
+
 /**
  * The camera is a GameObject that can be moved, rotated and scaled like any
  * other.
@@ -42,6 +44,7 @@ public class Camera extends GameObject {
 		// it by default. In my custom game, this is enabled.
 		if (depthBufferEnabled) {
 			gl.glEnable(GL2.GL_DEPTH_TEST);
+			gl.glClearDepth(18.0);
 			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 		} else {
 			gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
@@ -51,11 +54,13 @@ public class Camera extends GameObject {
 		gl.glLoadIdentity();
 
 		double[] globalTranslate = getGlobalPosition();
-		double globalRotate = getGlobalRotation();
+		Vector3 globalRotate = getGlobalRotationVector();
 		double globalScale = getGlobalScale();
 
-		gl.glScaled(1.0 / globalScale, 1.0 / globalScale, 1.0);
-		gl.glRotated(-globalRotate, 0.0, 0.0, 1.0);
+		gl.glScaled(1.0 / globalScale, 1.0 / globalScale, 1.0 / globalScale);
+		gl.glRotated(-globalRotate.z, 0.0, 0.0, 1.0);
+		gl.glRotated(-globalRotate.y, 0.0, 1.0, 0.0);
+		gl.glRotated(-globalRotate.x, 1.0, 0.0, 0.0);
 		gl.glTranslated(-globalTranslate[0], -globalTranslate[1], 0.0);
 	}
 

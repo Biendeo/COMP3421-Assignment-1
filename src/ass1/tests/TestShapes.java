@@ -48,7 +48,7 @@ public class TestShapes {
         //MyCoolGameObject o1 = new MyCoolGameObject(GameObject.ROOT, new double[]{0.8, 0.2, 0.2, 1.0}, new double[]{0.6, 0.1, 0.1, 1.0});
         //o1.translate(-1.5, 1.0);
         MyCoolGameObject o2 = new MyCoolGameObject(GameObject.ROOT, new double[]{0.5, 0.2, 0.2, 1.0}, new double[]{0.6, 0.1, 0.1, 1.0});
-        o2.translate(new Vector3(-1.3, 0.8, 0.0));
+        o2.translate(new Vector3(-1.3, 0.8, -0.5));
         o2.setRotationVector(new Vector3(0.0, 45.0, 0.0));
 	}
    
@@ -70,7 +70,6 @@ public class TestShapes {
         // Create a camera
         Camera camera = new Camera(GameObject.ROOT);
         camera.enableDepthBuffer(); // This enables drawing objects on top of other objects.
-        camera.translate(new Vector3(0.0, 0.0, 5.0));
         camera.setScale(2); // scale up the camera so we can see more of the world  
               
         createTestShapes();
