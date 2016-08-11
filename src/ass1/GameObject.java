@@ -116,7 +116,12 @@ public class GameObject {
      * @return
      */
     public Vector3 getRotationVector() {
-    	return myRotation.clone();
+    	// TODO: Remove this and try and get this normalised in memory.
+    	Vector3 normalisedRotation = myRotation.clone();
+    	normalisedRotation.x = MathUtil.normaliseAngle(normalisedRotation.x);
+    	normalisedRotation.y = MathUtil.normaliseAngle(normalisedRotation.y);
+    	normalisedRotation.z = MathUtil.normaliseAngle(normalisedRotation.z);
+    	return normalisedRotation;
     }
 
     /**
@@ -403,8 +408,8 @@ public class GameObject {
     	double[][] parentGlobalScaleMatrix = MathUtil.scaleMatrix(parentGlobalScale);
     	
     	double[][] rotatedTranslationMatrix = MathUtil.multiply4D(parentGlobalRotationMatrix, localPositionMatrix);
-    	//double[][] scaledMatrix = MathUtil.multiply4D(rotatedTranslationMatrix, parentGlobalScaleMatrix);
     	
+    	// TODO: Use a matrix for this.
     	Vector3 intermediateVector = MathUtil.translationMatrixToVector(rotatedTranslationMatrix);
     	intermediateVector.x *= parentGlobalScale.x;
     	intermediateVector.y *= parentGlobalScale.y;
@@ -412,21 +417,6 @@ public class GameObject {
     	
     	Vector3 finalVector = intermediateVector.add(parentGlobalPosition);
     	
-    	
-    	
-    	/*
-    	double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotation);
-    	
-    	double[][] newGlobalTranslationScaled = MathUtil.multiply4D(MathUtil.translationMatrix(getPositionVector()), MathUtil.scaleMatrix(parentGlobalScale));
-    	
-    	Vector3 referenceScale = MathUtil.translationMatrixToVector(newGlobalTranslationScaled);
-    	
-    	double[][] newGlobalTranslationRotated = MathUtil.multiply4D(parentGlobalRotationMatrix, newGlobalTranslationScaled);
-    	
-    	Vector3 newGlobalTranslationScaledVector = MathUtil.translationMatrixToVector(newGlobalTranslationRotated);
-    	
-    	Vector3 finalTranslation = newGlobalTranslationScaledVector.add(parentGlobalPosition);
-    	*/
     	return finalVector;
     }
 
@@ -505,7 +495,7 @@ public class GameObject {
      */
     public void setParent(GameObject parent) {
     	
-    	// This is legacy from before I moved to 3D.
+    	// This is the legacy code from before I moved to 3D.
     	/*
     	double[] globalPosition = getGlobalPosition();
     	double globalRotation = getGlobalRotation();
@@ -526,7 +516,8 @@ public class GameObject {
         myScale.y = myScale.x = globalScale / ((this != GameObject.ROOT) ? myParent.getGlobalScale() : 1.0);
         */
     	
-    	// This uses 3D matrices.
+    	
+    	// This now uses 3D matrices.
         Vector3 globalPosition = getGlobalPositionVector();
         Vector3 globalRotation = getGlobalRotationVector();
         Vector3 globalScale = getGlobalScaleVector();
@@ -539,18 +530,23 @@ public class GameObject {
         Vector3 parentGlobalRotation = myParent.getGlobalRotationVector();
         Vector3 parentGlobalScale = myParent.getGlobalScaleVector();
         
+        Vector3 parentGlobalRotationInverted = parentGlobalRotation.multiply(-1);
+        
         Vector3 globalPositionDifference = globalPosition.subtract(parentGlobalPosition);
-        
-        double[][] globalPositionDifferenceMatrix = MathUtil.translationMatrix(globalPositionDifference);
 
-        double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotation);
-        double[][] parentGlobalScaleMatrix = MathUtil.scaleMatrix(parentGlobalScale);
+        double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotationInverted);
         
-        double[][] globalScaledMatrix = MathUtil.multiply4D(parentGlobalScaleMatrix, globalPositionDifferenceMatrix);
+        // TODO: Use a matrix for this.
+        Vector3 globalPositionDifferenceScaled = globalPositionDifference.clone();
+        globalPositionDifferenceScaled.x *= (1 / parentGlobalScale.x);
+        globalPositionDifferenceScaled.y *= (1 / parentGlobalScale.y);
+        globalPositionDifferenceScaled.z *= (1 / parentGlobalScale.z);
         
-        double[][] globalScaledRotatedMatrix = MathUtil.multiply4D(parentGlobalRotationMatrix, globalScaledMatrix);
+        double[][] globalPositionDifferenceScaledMatrix = MathUtil.translationMatrix(globalPositionDifferenceScaled);
         
-        myTranslation = MathUtil.translationMatrixToVector(globalScaledRotatedMatrix);
+        double[][] globalRotatedMatrix = MathUtil.multiply4D(parentGlobalRotationMatrix, globalPositionDifferenceScaledMatrix);
+        
+        myTranslation = MathUtil.translationMatrixToVector(globalRotatedMatrix);
         
         myRotation = globalRotation.subtract(parentGlobalRotation);
         myScale.x = globalScale.x / parentGlobalScale.x;
