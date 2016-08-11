@@ -365,6 +365,8 @@ public class GameObject {
      * TODO: Write this method
      * 
      * @return a point in world coordinats in [x,y] form
+     * 
+     * @deprecated Use {@link #getGlobalPositionVector()} and grab the x and y values.
      */
     public double[] getGlobalPosition() {
         double[] p = new double[2];
@@ -384,12 +386,26 @@ public class GameObject {
     }
     
     /**
-     * Compute the object's position
-     * @return
+     * Compute the object's position in world coordinates
+     * 
+     * @return The world coordinates as a Vector3 (x,y,z)
      */
     public Vector3 getGlobalPositionVector() {
-    	// TODO: This.
-    	return null;
+    	Vector3 parentGlobalPosition = ((this != GameObject.ROOT) ? myParent.getGlobalPositionVector() : new Vector3());
+    	Vector3 parentGlobalRotation = ((this != GameObject.ROOT) ? myParent.getGlobalRotationVector() : new Vector3());
+    	Vector3 parentGlobalScale = ((this != GameObject.ROOT) ? myParent.getGlobalScaleVector() : new Vector3(1.0, 1.0, 1.0));
+    	
+    	double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotation);
+    	
+    	double[][] newGlobalTranslation = MathUtil.multiply4D(parentGlobalRotationMatrix, MathUtil.translationMatrix(getPositionVector()));
+    	
+    	double[][] newGlobalTranslationScaled = MathUtil.multiply4D(newGlobalTranslation, MathUtil.scaleMatrix(parentGlobalScale));
+    	
+    	Vector3 newGlobalTranslationScaledVector = MathUtil.translationMatrixToVector(newGlobalTranslationScaled);
+    	
+    	Vector3 finalTranslation = newGlobalTranslationScaledVector.add(parentGlobalPosition);
+    	
+    	return finalTranslation;
     }
 
     /**
@@ -467,8 +483,7 @@ public class GameObject {
      */
     public void setParent(GameObject parent) {
     	
-    	// TODO: Change this to Vector3.
-    	
+    	// This is legacy from before I moved to 3D.
     	double[] globalPosition = getGlobalPosition();
     	double globalRotation = getGlobalRotation();
     	double globalScale = getGlobalScale();

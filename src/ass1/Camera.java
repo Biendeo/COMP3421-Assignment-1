@@ -44,7 +44,7 @@ public class Camera extends GameObject {
 		// it by default. In my custom game, this is enabled.
 		if (depthBufferEnabled) {
 			gl.glEnable(GL2.GL_DEPTH_TEST);
-			gl.glClearDepth(18.0);
+			gl.glClearDepth(1000.0);
 			gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
 		} else {
 			gl.glClear(GL2.GL_COLOR_BUFFER_BIT);
