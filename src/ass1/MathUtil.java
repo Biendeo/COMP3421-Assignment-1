@@ -211,13 +211,13 @@ public class MathUtil {
     	returnMatrix[0][3] = 0;
     	
     	returnMatrix[1][0] = 0;
-    	returnMatrix[1][1] = Math.cos(Math.toDegrees(xAngle));
-    	returnMatrix[1][2] = -Math.sin(Math.toDegrees(xAngle));
+    	returnMatrix[1][1] = Math.cos(Math.toRadians(xAngle));
+    	returnMatrix[1][2] = -Math.sin(Math.toRadians(xAngle));
     	returnMatrix[1][3] = 0;
     	
     	returnMatrix[2][0] = 0;
-    	returnMatrix[2][1] = Math.sin(Math.toDegrees(xAngle));
-    	returnMatrix[2][2] = Math.cos(Math.toDegrees(xAngle));
+    	returnMatrix[2][1] = Math.sin(Math.toRadians(xAngle));
+    	returnMatrix[2][2] = Math.cos(Math.toRadians(xAngle));
     	returnMatrix[2][3] = 0;
     	
     	returnMatrix[3][0] = 0;
@@ -231,9 +231,9 @@ public class MathUtil {
     public static double[][] rotationMatrixY(double yAngle) {
     	double[][] returnMatrix = new double[4][4];
 
-    	returnMatrix[0][0] = Math.cos(Math.toDegrees(yAngle));
+    	returnMatrix[0][0] = Math.cos(Math.toRadians(yAngle));
     	returnMatrix[0][1] = 0;
-    	returnMatrix[0][2] = Math.sin(Math.toDegrees(yAngle));
+    	returnMatrix[0][2] = Math.sin(Math.toRadians(yAngle));
     	returnMatrix[0][3] = 0;
     	
     	returnMatrix[1][0] = 0;
@@ -241,9 +241,9 @@ public class MathUtil {
     	returnMatrix[1][2] = 0;
     	returnMatrix[1][3] = 0;
     	
-    	returnMatrix[2][0] = -Math.sin(Math.toDegrees(yAngle));
+    	returnMatrix[2][0] = -Math.sin(Math.toRadians(yAngle));
     	returnMatrix[2][1] = 0;
-    	returnMatrix[2][2] = Math.cos(Math.toDegrees(yAngle));
+    	returnMatrix[2][2] = Math.cos(Math.toRadians(yAngle));
     	returnMatrix[2][3] = 0;
     	
     	returnMatrix[3][0] = 0;
@@ -257,13 +257,13 @@ public class MathUtil {
     public static double[][] rotationMatrixZ(double zAngle) {
     	double[][] returnMatrix = new double[4][4];
 
-    	returnMatrix[0][0] = Math.cos(Math.toDegrees(zAngle));
-    	returnMatrix[0][1] = -Math.sin(Math.toDegrees(zAngle));
+    	returnMatrix[0][0] = Math.cos(Math.toRadians(zAngle));
+    	returnMatrix[0][1] = -Math.sin(Math.toRadians(zAngle));
     	returnMatrix[0][2] = 0;
     	returnMatrix[0][3] = 0;
     	
-    	returnMatrix[1][0] = Math.sin(Math.toDegrees(zAngle));
-    	returnMatrix[1][1] = Math.cos(Math.toDegrees(zAngle));
+    	returnMatrix[1][0] = Math.sin(Math.toRadians(zAngle));
+    	returnMatrix[1][1] = Math.cos(Math.toRadians(zAngle));
     	returnMatrix[1][2] = 0;
     	returnMatrix[1][3] = 0;
     	
@@ -287,9 +287,13 @@ public class MathUtil {
 			double z = Math.toDegrees(Math.atan2(rotationMatrix[0][2], rotationMatrix[2][3]));
 			return new Vector3(x, y, z);
 		} else {
-			double x = Math.toDegrees(Math.atan2(-rotationMatrix[1][2], rotationMatrix[1][1]));
-			double y = Math.toDegrees(Math.asin(rotationMatrix[1][0]));
-			double z = Math.toDegrees(Math.atan2(-rotationMatrix[2][0], rotationMatrix[0][0]));
+			//double x = Math.toDegrees(Math.atan2(-rotationMatrix[1][2], rotationMatrix[1][1]));
+			//double y = Math.toDegrees(Math.asin(rotationMatrix[1][0]));
+			//double z = Math.toDegrees(Math.atan2(-rotationMatrix[2][0], rotationMatrix[0][0]));
+			double x = Math.toDegrees(Math.atan2(rotationMatrix[2][1], rotationMatrix[2][2]));
+			double y = Math.toDegrees(Math.atan2(-rotationMatrix[2][0], Math.sqrt(rotationMatrix[2][1] * rotationMatrix[2][1] + rotationMatrix[2][2] * rotationMatrix[2][2])));
+			double z = Math.toDegrees(Math.atan2(rotationMatrix[1][0], rotationMatrix[0][0]));
+			
 			return new Vector3(x, y, z);
 		}
     }

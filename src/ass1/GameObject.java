@@ -395,17 +395,39 @@ public class GameObject {
     	Vector3 parentGlobalRotation = ((this != GameObject.ROOT) ? myParent.getGlobalRotationVector() : new Vector3());
     	Vector3 parentGlobalScale = ((this != GameObject.ROOT) ? myParent.getGlobalScaleVector() : new Vector3(1.0, 1.0, 1.0));
     	
+    	double[][] localPositionMatrix = MathUtil.translationMatrix(getPositionVector());
+    	
+    	// I didn't really know how to use these matrices effectively.
+    	double[][] parentGlobalPositionMatrix = MathUtil.translationMatrix(parentGlobalPosition);
+    	double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotation);
+    	double[][] parentGlobalScaleMatrix = MathUtil.scaleMatrix(parentGlobalScale);
+    	
+    	double[][] rotatedTranslationMatrix = MathUtil.multiply4D(parentGlobalRotationMatrix, localPositionMatrix);
+    	//double[][] scaledMatrix = MathUtil.multiply4D(rotatedTranslationMatrix, parentGlobalScaleMatrix);
+    	
+    	Vector3 intermediateVector = MathUtil.translationMatrixToVector(rotatedTranslationMatrix);
+    	intermediateVector.x *= parentGlobalScale.x;
+    	intermediateVector.y *= parentGlobalScale.y;
+    	intermediateVector.z *= parentGlobalScale.z;
+    	
+    	Vector3 finalVector = intermediateVector.add(parentGlobalPosition);
+    	
+    	
+    	
+    	/*
     	double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotation);
     	
-    	double[][] newGlobalTranslation = MathUtil.multiply4D(parentGlobalRotationMatrix, MathUtil.translationMatrix(getPositionVector()));
+    	double[][] newGlobalTranslationScaled = MathUtil.multiply4D(MathUtil.translationMatrix(getPositionVector()), MathUtil.scaleMatrix(parentGlobalScale));
     	
-    	double[][] newGlobalTranslationScaled = MathUtil.multiply4D(newGlobalTranslation, MathUtil.scaleMatrix(parentGlobalScale));
+    	Vector3 referenceScale = MathUtil.translationMatrixToVector(newGlobalTranslationScaled);
     	
-    	Vector3 newGlobalTranslationScaledVector = MathUtil.translationMatrixToVector(newGlobalTranslationScaled);
+    	double[][] newGlobalTranslationRotated = MathUtil.multiply4D(parentGlobalRotationMatrix, newGlobalTranslationScaled);
+    	
+    	Vector3 newGlobalTranslationScaledVector = MathUtil.translationMatrixToVector(newGlobalTranslationRotated);
     	
     	Vector3 finalTranslation = newGlobalTranslationScaledVector.add(parentGlobalPosition);
-    	
-    	return finalTranslation;
+    	*/
+    	return finalVector;
     }
 
     /**
