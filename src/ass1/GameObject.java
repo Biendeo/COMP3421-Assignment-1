@@ -17,8 +17,6 @@ import ass1.math.Vector3;
  * 
  * Each GameObject is offset from its parent by a rotation, a translation and a scale factor. 
  *
- * TODO: The methods you need to complete are at the bottom of the class
- *
  * @author malcolmr
  */
 public class GameObject {
@@ -34,7 +32,7 @@ public class GameObject {
     private List<GameObject> myChildren;
 
     // the local transformation
-    //myRotation should be normalised to the range (-180..180)
+    // These have been changed into Vector3 objects,
     private Vector3 myRotation;
     private Vector3 myScale;
     private Vector3 myTranslation;
