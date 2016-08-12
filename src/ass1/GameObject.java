@@ -231,10 +231,7 @@ public class GameObject {
      * @param factor
      */
     public void scale(Vector3 factor) {
-    	// TODO: Replace this with the Vector3 multiplication later.
-    	myScale.x *= factor.x;
-    	myScale.y *= factor.y;
-    	myScale.z *= factor.z;
+    	myScale.multiplySelf(factor);
     }
 
     /**

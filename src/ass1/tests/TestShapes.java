@@ -66,7 +66,7 @@ public class TestShapes {
         
         // create a GLJPanel to draw on
         GLJPanel panel = new GLJPanel(glcapabilities);
-
+        
         // Create a camera
         Camera camera = new Camera(GameObject.ROOT);
         camera.enableDepthBuffer(); // This enables drawing objects on top of other objects.
