@@ -563,5 +563,27 @@ public class GameObject {
         myScale = globalScale.divide(parentGlobalScale);
     }
     
+    /**
+     * Returns whether the given point collides with this object.
+     * The z axis is ignored in this collision.
+     * 
+     * @param p
+     * @return
+     */
+    public boolean collides(double[] p) {
+    	return collides(new Vector3(p[0], p[1], 0.0));
+    }
+    
+    /**
+     * Returns whether the given point collides with this object.
+     * The z axis is ignored in this collision.
+     * 
+     * This should be overriden by any class that extends this and wants collisions.
+     * @param v
+     * @return
+     */
+    public boolean collides(Vector3 v) {
+    	return false;
+    }
 
 }
