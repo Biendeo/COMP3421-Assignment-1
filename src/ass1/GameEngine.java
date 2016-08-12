@@ -22,7 +22,6 @@ public class GameEngine implements GLEventListener {
 
     private Camera myCamera;
     private long myTime;
-    protected double dt;
 
     /**
      * Construct a new game engine.
@@ -78,11 +77,11 @@ public class GameEngine implements GLEventListener {
         GameObject.ROOT.draw(gl);        
     }
 
-    protected void update() {
+    private void update() {
         
         // compute the time since the last frame
         long time = System.currentTimeMillis();
-        dt = (time - myTime) / 1000.0;
+        double dt = (time - myTime) / 1000.0;
         myTime = time;
         
         // take a copy of the ALL_OBJECTS list to avoid errors 
