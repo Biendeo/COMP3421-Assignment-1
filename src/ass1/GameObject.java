@@ -424,9 +424,7 @@ public class GameObject {
     	
     	// TODO: Use a matrix for this.
     	Vector3 intermediateVector = MathUtil.translationMatrixToVector(rotatedTranslationMatrix);
-    	intermediateVector.x *= parentGlobalScale.x;
-    	intermediateVector.y *= parentGlobalScale.y;
-    	intermediateVector.z *= parentGlobalScale.z;
+    	intermediateVector.multiply(parentGlobalScale);
     	
     	Vector3 finalVector = intermediateVector.add(parentGlobalPosition);
     	
@@ -557,10 +555,7 @@ public class GameObject {
         double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotationInverted);
         
         // TODO: Use a matrix for this.
-        Vector3 globalPositionDifferenceScaled = globalPositionDifference.clone();
-        globalPositionDifferenceScaled.x *= (1 / parentGlobalScale.x);
-        globalPositionDifferenceScaled.y *= (1 / parentGlobalScale.y);
-        globalPositionDifferenceScaled.z *= (1 / parentGlobalScale.z);
+        Vector3 globalPositionDifferenceScaled = parentGlobalScale.invert();
         
         double[][] globalPositionDifferenceScaledMatrix = MathUtil.translationMatrix(globalPositionDifferenceScaled);
         
@@ -569,10 +564,7 @@ public class GameObject {
         myTranslation = MathUtil.translationMatrixToVector(globalRotatedMatrix);
         
         myRotation = globalRotation.subtract(parentGlobalRotation);
-        // TODO: Replace this with the Vector3 division later.
-        myScale.x = globalScale.x / parentGlobalScale.x;
-        myScale.y = globalScale.y / parentGlobalScale.y;
-        myScale.z = globalScale.z / parentGlobalScale.z;
+        myScale = globalScale.divide(parentGlobalScale);
     }
     
 

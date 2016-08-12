@@ -183,7 +183,43 @@ public class Vector3 {
 		return returnVector;
 	}
 	
-	// TODO: Add a multiply by vector that just multiplies each value.
+	/**
+	 * Multiplies each property by its corresponding field in the other vector (the * operator).
+	 * @param v
+	 * @return
+	 */
+	public Vector3 multiply(Vector3 v) {
+		return multiply(this, v);
+	}
+
+	/**
+	 * Multipies each property by its corresponding field in the other vector in place (the *= operator).
+	 * @param v
+	 * @return This object.
+	 */
+	public Vector3 multiplySelf(Vector3 v) {
+		Vector3 a = multiply(this, v);
+		x = a.x;
+		y = a.y;
+		z = a.z;
+		
+		return this;
+	}
+	
+	/**
+	 * Multiplies each property by its corresponding field in the other vector (the * operator).
+	 * @param left
+	 * @param right
+	 * @return
+	 */
+	public static Vector3 multiply(Vector3 left, Vector3 right) {
+		Vector3 returnVector = new Vector3();
+		returnVector.x = left.x * right.x;
+		returnVector.y = left.y * right.y;
+		returnVector.z = left.z * right.z;
+		
+		return returnVector;
+	}
 	
 	/**
 	 * Divides all values by the given double (the / operator).
@@ -223,9 +259,76 @@ public class Vector3 {
 		return returnVector;
 	}
 	
-	// TODO: Add a divide by vector that just divides each value. (used for scale vectors)
+	/**
+	 * Divides each property by its corresponding field in the other vector (the / operator).
+	 * @param v
+	 * @return
+	 */
+	public Vector3 divide(Vector3 v) {
+		return divide(this, v);
+	}
+
+	/**
+	 * Divides each property by its corresponding field in the other vector in place (the /= operator).
+	 * @param v
+	 * @return This object.
+	 */
+	public Vector3 divideSelf(Vector3 v) {
+		Vector3 a = divide(this, v);
+		x = a.x;
+		y = a.y;
+		z = a.z;
+		
+		return this;
+	}
 	
-	// TODO: Add an invert and invertSelf function.
+	/**
+	 * Divides each property by its corresponding field in the other vector (the / operator).
+	 * @param left
+	 * @param right
+	 * @return
+	 */
+	public static Vector3 divide(Vector3 left, Vector3 right) {
+		Vector3 returnVector = new Vector3();
+		returnVector.x = left.x / right.x;
+		returnVector.y = left.y / right.y;
+		returnVector.z = left.z / right.z;
+		
+		return returnVector;
+	}
+	
+	/**
+	 * Returns the Vector3 where each property is the reciprocal of itself (similar to a ^-1 operator).
+	 * 
+	 * @return
+	 */
+	public Vector3 invert() {
+		return invert(this);
+	}
+	
+	/**
+	 * In places the Vector3 where each property is the reciprocal of itself (similar to a ^-1 operator).
+	 * 
+	 * @return This object.
+	 */
+	public Vector3 invertSelf() {
+		Vector3 a  = invert(this);
+		x = a.x;
+		y = a.y;
+		z = a.z;
+		
+		return this;
+	}
+	
+	/**
+	 * Returns the Vector3 where each property is the reciprocal of itself (similar to a ^-1 operator).
+	 * 
+	 * @param term
+	 * @return
+	 */
+	public static Vector3 invert(Vector3 term) {
+		return divide(new Vector3(1.0, 1.0, 1.0), term);
+	}
 	
 	/**
 	 * Computes the overall distance achieved by this vector.
