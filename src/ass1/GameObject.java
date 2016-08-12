@@ -32,10 +32,17 @@ public class GameObject {
     private List<GameObject> myChildren;
 
     // the local transformation
-    // These have been changed into Vector3 objects,
-    private Vector3 myRotation;
-    private Vector3 myScale;
+    // These have been changed into Vector3 objects to allow 3D coordinates and transformations.
+    // The Z property of myTranslation now allows for depth rendering, which lets you control
+    // what objects get drawn on top of other objects, which is especially useful during runtime
+    // instancing.
     private Vector3 myTranslation;
+    // Rotation around the X and Y axes is mostly for visual effects.
+    private Vector3 myRotation;
+    // Scaling on the X and Y axes are independent now, allowing for better control of shapes.
+    // Scaling on the Z axis serves no purpose since everything is flat and collision is uniform
+    // across the world's Z axis.
+    private Vector3 myScale;
     
     // is this part of the tree showing?
     private boolean amShowing;
@@ -126,13 +133,16 @@ public class GameObject {
      * Set the local rotation (in degrees)
      * 
      * @return
+     * @deprecated Use {@link #setRotationVector(Vector3)}.
      */
     public void setRotation(double rotation) {
         myRotation.z = MathUtil.normaliseAngle(rotation);
     }
     
     /**
-     * Set the local rotation (in degrees)
+     * Sets the local rotation to the given vector.
+     * To use it similarly to the old {@link #setRotation(double)}, create the Vector3 object with
+     * the same x and y properties as the current rotation, and change only the z axis.
      * 
      * @param rotation
      */
@@ -152,27 +162,31 @@ public class GameObject {
     }
     
     /**
-     * Rotate the object by the given angle (in degrees)
+     * Adds the given rotation to the current rotation.
+     * To use it similarly to the old {@link #rotate(double)}, create the Vector3 object with 0
+     * in the x and y properties, and the rotation in the z property.
      * 
-     * @param angle
+     * @param rotation
      */
-    public void rotate(Vector3 angle) {
-    	myRotation.addSelf(angle);
-    	//myRotation = MathUtil.rotationMatrixToVector(MathUtil.multiply4D(MathUtil.rotationMatrixXYZ(angle), MathUtil.rotationMatrixXYZ(myRotation)));
+    public void rotate(Vector3 rotation) {
+    	myRotation.addSelf(rotation);
     }
 
     /**
-     * Get the local scale
+     * Get the local scale.
      * 
      * @return
-     * @deprecated Use {@link #getScaleVector()} instead.
+     * @deprecated Use {@link #getScaleVector()}. If you've been changing the x and y scale
+     * independently, then this will only return the x scale.
      */
     public double getScale() {
         return myScale.x;
     }
     
     /**
-     * Get the local scale.
+     * Returns the local scale vector.
+     * To use it similarly to the old {@link #getScale()}, grab the x property afterwards. This
+     * relies on you scaling everything uniformly across the x and y axes.
      * 
      * @return
      */
@@ -192,7 +206,9 @@ public class GameObject {
     }
     
     /**
-     * Set the local scale
+     * Sets the  local scale to the given Vector3.
+     * To use it similarly to the old {@link #setScale(double)}, just make sure that the x and y
+     * properties are the same.
      * 
      * @param scale
      */
@@ -215,6 +231,7 @@ public class GameObject {
      * @param factor
      */
     public void scale(Vector3 factor) {
+    	// TODO: Replace this with the Vector3 multiplication later.
     	myScale.x *= factor.x;
     	myScale.y *= factor.y;
     	myScale.z *= factor.z;
@@ -235,7 +252,9 @@ public class GameObject {
     }
     
     /**
-     * Get the local position of the object
+     * Returns the local position of the object.
+     * To use this similarly to the old {@link #getPosition()}, just grab the x and y properties
+     * from the Vector3 object.
      * 
      * @return
      */
@@ -245,6 +264,7 @@ public class GameObject {
 
     /**
      * Set the local position of the object
+     * This does not change its z property.
      * 
      * @param x
      * @param y
@@ -255,7 +275,8 @@ public class GameObject {
     }
     
     /**
-     * Set the local position of the object
+     * Set the local position of the object.
+     * This changes its z property (unless you keep it the same).
      * 
      * @param v
      */
@@ -275,7 +296,8 @@ public class GameObject {
     }
     
     /**
-     * Move the object by the specified offset in local coordinates
+     * Moves the object by the specified vector.
+     * Remember to set the z property to 0 if you don't want to change the depth.
      * 
      * @param v
      */
@@ -323,16 +345,9 @@ public class GameObject {
     public void drawSelf(GL2 gl) {
         // do nothing
     }
-
-    
-    // ===========================================
-    // COMPLETE THE METHODS BELOW
-    // ===========================================
     
     /**
      * Draw the object and all of its descendants recursively.
-     * 
-     * TODO: Complete this method
      * 
      * @param gl
      */
@@ -365,8 +380,6 @@ public class GameObject {
     /**
      * Compute the object's position in world coordinates
      * 
-     * TODO: Write this method
-     * 
      * @return a point in world coordinats in [x,y] form
      * 
      * @deprecated Use {@link #getGlobalPositionVector()} and grab the x and y values.
@@ -389,7 +402,9 @@ public class GameObject {
     }
     
     /**
-     * Compute the object's position in world coordinates
+     * Compute the object's position in world coordinates's and returns it as a Vector3.
+     * To use this similarly to the old {@link #getGlobalPosition()}, just grab the x and y
+     * properties from the returned Vector3.
      * 
      * @return The world coordinates as a Vector3 (x,y,z)
      */
@@ -437,9 +452,9 @@ public class GameObject {
     
     /**
      * Compute the object's rotation in the global coordinate frame.
+     * To use this similarly to the old {@link #getGlobalRotation()}, just grab the z property.
      * 
-     * @return The global rotation of the object (in an Euler angle Vector3) and
-     * normalized to the range given by Java's math libraries.
+     * @return The global rotation of the object in a Vector3
      */
     public Vector3 getGlobalRotationVector() {
     	if (this == GameObject.ROOT) {
@@ -471,6 +486,13 @@ public class GameObject {
         return globalScale;
     }
     
+    /**
+     * Computes the object's global scale.
+     * To use this similarly to the old {@link #getGlobalScale()}, grab the x property of the
+     * return. This only works the same if you've been scaling uniformly across the x and y axes.
+     * 
+     * @return The global scale of the object in a Vector3.
+     */
     public Vector3 getGlobalScaleVector() {
     	if (this == GameObject.ROOT) {
     		return myScale.clone();
@@ -547,6 +569,7 @@ public class GameObject {
         myTranslation = MathUtil.translationMatrixToVector(globalRotatedMatrix);
         
         myRotation = globalRotation.subtract(parentGlobalRotation);
+        // TODO: Replace this with the Vector3 division later.
         myScale.x = globalScale.x / parentGlobalScale.x;
         myScale.y = globalScale.y / parentGlobalScale.y;
         myScale.z = globalScale.z / parentGlobalScale.z;
