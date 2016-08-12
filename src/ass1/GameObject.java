@@ -413,9 +413,7 @@ public class GameObject {
     	double[][] localPositionMatrix = MathUtil.translationMatrix(getPositionVector());
     	
     	// I didn't really know how to use these matrices effectively.
-    	double[][] parentGlobalPositionMatrix = MathUtil.translationMatrix(parentGlobalPosition);
     	double[][] parentGlobalRotationMatrix = MathUtil.rotationMatrixXYZ(parentGlobalRotation);
-    	double[][] parentGlobalScaleMatrix = MathUtil.scaleMatrix(parentGlobalScale);
     	
     	double[][] rotatedTranslationMatrix = MathUtil.multiply4D(parentGlobalRotationMatrix, localPositionMatrix);
     	

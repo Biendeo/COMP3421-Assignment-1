@@ -77,14 +77,7 @@ public class CircularGameObject extends GameObject {
         myLineColour = lineColour;
     }
 
-    // ===========================================
-    // COMPLETE THE METHODS BELOW
-    // ===========================================
-    
-
     /**
-     * TODO: Draw the polygon
-     * 
      * if the fill colour is non-null, fill the polygon with this colour
      * if the line colour is non-null, draw the outline with this colour
      * 

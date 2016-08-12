@@ -5,8 +5,6 @@ import ass1.math.Vector3;
 /**
  * A collection of useful math methods 
  *
- * TODO: The methods you need to complete are at the bottom of the class
- *
  * @author malcolmr
  */
 public class MathUtil {

@@ -7,8 +7,6 @@ import com.jogamp.opengl.GL2;
  * 
  * This class extend GameObject to draw polygonal shapes.
  *
- * TODO: The methods you need to complete are at the bottom of the class
- *
  * @author malcolmr
  */
 public class PolygonalGameObject extends GameObject {
@@ -98,15 +96,8 @@ public class PolygonalGameObject extends GameObject {
     public void setLineColour(double[] lineColour) {
         myLineColour = lineColour;
     }
-
-    // ===========================================
-    // COMPLETE THE METHODS BELOW
-    // ===========================================
     
-
     /**
-     * TODO: Draw the polygon
-     * 
      * if the fill colour is non-null, fill the polygon with this colour
      * if the line colour is non-null, draw the outline with this colour
      * 
