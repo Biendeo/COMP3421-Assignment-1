@@ -87,9 +87,16 @@ public class Camera extends GameObject {
 			left = -1;
 			right = 1;
 		}
-		GLU myGLU = new GLU();
-		// coordinate system (left, right, bottom, top)
-		myGLU.gluOrtho2D(left, right, bottom, top);
+		
+		// If 3D rendering is wanted, then we set up the orthographic projection to the same as
+		// before, but with a near-far plane of [0.01, 1000.0]. Otherwise, it's the given code.
+		if (depthBufferEnabled) {
+			gl.glOrtho(left, right, bottom, top, 0.01, 1000.0);
+		} else {
+			GLU myGLU = new GLU();
+			// coordinate system (left, right, bottom, top)
+			myGLU.gluOrtho2D(left, right, bottom, top);
+		}
 	}
 
 	public void enableDepthBuffer() {

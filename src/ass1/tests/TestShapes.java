@@ -54,7 +54,7 @@ public class TestShapes {
    
     /**
      * A simple example of how to use PolygonalGameObject, CircularGameObject and LineObject
-     * 
+     *
      * and also how to put together a simple scene using the game engine.
      * 
      * @param args
@@ -69,8 +69,11 @@ public class TestShapes {
         
         // Create a camera
         Camera camera = new Camera(GameObject.ROOT);
-        camera.enableDepthBuffer(); // This enables drawing objects on top of other objects.
         camera.setScale(2); // scale up the camera so we can see more of the world  
+        
+        // For marking, please disable these next two lines.
+        camera.enableDepthBuffer(); // This enables drawing objects on top of other objects.
+        camera.translate(new Vector3(0.0, 0.0, 5.0));
               
         createTestShapes();
         

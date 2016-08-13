@@ -19,17 +19,17 @@ public class MyCoolGameObject extends CircularGameObject {
         super(parent, 0.7, fillColor, outlineColor);
 
         leftEar = new PolygonalGameObject(this, leftEarVertices, fillColor, outlineColor);
-        leftEar.translate(new Vector3(-0.4, 0.4, 0.001));
+        leftEar.translate(new Vector3(-0.4, 0.4, 0.05));
         
         rightEar = new PolygonalGameObject(this, rightEarVertices, fillColor, outlineColor);
-        rightEar.translate(new Vector3(0.4, 0.4, 0.001));
+        rightEar.translate(new Vector3(0.4, 0.4, 0.05));
         
         leftEye = new CircularGameObject(this, eyeColor, null);
-        leftEye.translate(new Vector3(-0.25, 0.2, 0.001));
+        leftEye.translate(new Vector3(-0.25, 0.2, 0.05));
         leftEye.scale(0.2);
         
         rightEye = new CircularGameObject(this, eyeColor, null);
-        rightEye.translate(new Vector3(0.25, 0.2, 0.001));
+        rightEye.translate(new Vector3(0.25, 0.2, 0.05));
         rightEye.scale(0.2);
     }
     
