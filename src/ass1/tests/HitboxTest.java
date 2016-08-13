@@ -2,6 +2,7 @@ package ass1.tests;
 
 import ass1.CircularGameObject;
 import ass1.GameObject;
+import ass1.LineGameObject;
 import ass1.math.Vector3;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -49,6 +50,34 @@ public class HitboxTest extends TestCase {
 		assertTrue(obj.collides(p));
 
 		p = new Vector3(2.5, 2.0);
+		assertFalse(obj.collides(p));
+	}
+
+	@Test
+	public void testLine0() {
+		// This tests a line from (0.0, 0.0) to (1.0, 0.0).
+		GameObject obj = new LineGameObject(GameObject.ROOT, new Vector3(0.0, 0.0), new Vector3(1.0, 0.0), null);
+
+		Vector3 p = new Vector3(0.5, 0.0);
+
+		assertTrue(obj.collides(p));
+
+		p = new Vector3(0.5, 0.5);
+
+		assertFalse(obj.collides(p));
+	}
+
+	@Test
+	public void testLine1() {
+		// This tests a line from (1.0, 1.0) to (2.0, 3.0).
+		GameObject obj = new LineGameObject(GameObject.ROOT, new Vector3(1.0, 1.0), new Vector3(2.0, 3.0), null);
+
+		Vector3 p = new Vector3(1.5, 2.0);
+
+		assertTrue(obj.collides(p));
+
+		p = new Vector3(3.0, 5.0);
+
 		assertFalse(obj.collides(p));
 	}
 }

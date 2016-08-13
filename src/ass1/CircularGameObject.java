@@ -135,7 +135,7 @@ public class CircularGameObject extends GameObject {
 
 		localPointPosition = new Vector3(localPointPosition.x, localPointPosition.y, 0.0);
 
-		// Then, we just determine th
+		// Then, we just determine whether the point lies within the radius of the circle.
 		if (localPointPosition.modulus() <= myRadius) {
 			return true;
 		} else {
