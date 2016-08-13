@@ -1,5 +1,6 @@
 package ass1;
 
+import ass1.math.Vector3;
 import com.jogamp.opengl.GL2;
 
 /**
@@ -131,6 +132,119 @@ public class PolygonalGameObject extends GameObject {
     	}
 
     }
+
+	@Override
+	public boolean collides(Vector3 v) {
+		// Firstly, the point is converted from the global to the local co-ordinate space.
+		// TODO: Turn this into its own function.
+		Vector3 globalPosition = getGlobalPositionVector();
+		Vector3 globalRotation = getGlobalRotationVector();
+		Vector3 globalScale = getGlobalScaleVector();
+
+		Vector3 positionDifference = v.subtract(globalPosition);
+
+		Vector3 positionDifferenceScaled = positionDifference.multiply(globalScale.invert());
+
+		double[][] globalRotationMatrix = MathUtil.rotationMatrixXYZ(globalRotation);
+
+		double[][] positionDifferenceScaledMatrix = MathUtil.translationMatrix(positionDifferenceScaled);
+
+		double[][] positionRotatedMatrix = MathUtil.multiply4D(globalRotationMatrix, positionDifferenceScaledMatrix);
+
+		Vector3 localPointPosition = MathUtil.translationMatrixToVector(positionRotatedMatrix);
+
+		localPointPosition = new Vector3(localPointPosition.x, localPointPosition.y, 0.0);
+
+		// 1. Rectangle bounding box.
+		// 2. For every pair of vertices.
+			// If both vertices are to the left, ignore.
+			// If both are to the right:
+				// If both are above or below the point, ignore.
+				// If one is above and one is below, count a crossing.
+			// If one is to the left, and one is to the right.
+				// If both are above or below, ignore.
+				// Otherwise, compute the gradient similar to the line method.
+					// Count it if the point is to the left of the line.
+			// If an odd number of crossing, it's in.
+			// Otherwise, it's not.
+
+		// TODO: Document this better.
+		// TODO: Iron out the logic on this.
+
+		Vector3 rectangleTopLeft = new Vector3(100000000000.0, 100000000000.0);
+		Vector3 rectangleBottomRight = new Vector3(-100000000000.0, -100000000000.0);
+
+		for (int i = 0; i < myPoints.length; i += 2) {
+			if (myPoints[i] < rectangleTopLeft.x) {
+				rectangleTopLeft.x = myPoints[i];
+			}
+			if (myPoints[i] > rectangleBottomRight.x) {
+				rectangleBottomRight.x = myPoints[i];
+			}
+			if (myPoints[i + 1] < rectangleTopLeft.y) {
+				rectangleTopLeft.y = myPoints[i + 1];
+			}
+			if (myPoints[i + 1] > rectangleBottomRight.y) {
+				rectangleBottomRight.y = myPoints[i + 1];
+			}
+		}
+
+		if (localPointPosition.x < rectangleTopLeft.x || localPointPosition.x > rectangleBottomRight.x || localPointPosition.y < rectangleTopLeft.y || localPointPosition.y > rectangleBottomRight.y) {
+			return false;
+		}
+
+		int linesCrossed = 0;
+
+		for (int i = 0; i < myPoints.length; i += 2) {
+			Vector3 currentPoint = new Vector3(myPoints[i], myPoints[i + 1]);
+			Vector3 nextPoint;
+			if (i + 2 == myPoints.length) {
+				nextPoint = new Vector3(myPoints[0], myPoints[1]);
+			} else {
+				nextPoint = new Vector3(myPoints[i + 2], myPoints[i + 3]);
+			}
+
+			if (currentPoint.x < localPointPosition.x && nextPoint.x < localPointPosition.x) {
+				continue;
+			} else if (currentPoint.x > localPointPosition.x && nextPoint.x > localPointPosition.x) {
+				if (Math.abs(localPointPosition.y - currentPoint.y) + Math.abs(localPointPosition.y - nextPoint.y) == Math.abs(nextPoint.y - currentPoint.y)) {
+					++linesCrossed;
+				}
+			} else {
+				if (Math.abs(localPointPosition.y - currentPoint.y) + Math.abs(localPointPosition.y - nextPoint.y) == Math.abs(nextPoint.y - currentPoint.y)) {
+					double pointGradient;
+					if (nextPoint.x > currentPoint.x) {
+						pointGradient = (localPointPosition.y - currentPoint.y) / (localPointPosition.x - nextPoint.x);
+					} else {
+						pointGradient = (localPointPosition.y - nextPoint.y) / (localPointPosition.x - currentPoint.x);
+					}
+					double lineGradient = (nextPoint.y - currentPoint.y) / (nextPoint.x - currentPoint.x);
+					if (lineGradient == 0) {
+						// TODO: Handle this better.
+						++linesCrossed;
+					} else if (lineGradient < 0) {
+						if (pointGradient > lineGradient) {
+							++linesCrossed;
+						}
+					} else if (lineGradient > 0) {
+						if (pointGradient < lineGradient) {
+							++linesCrossed;
+						}
+					} else {
+						++linesCrossed;
+					}
+				}
+			}
+
+
+		}
+
+		if (linesCrossed % 2 == 0) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 
 
 }

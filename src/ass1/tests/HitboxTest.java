@@ -3,13 +3,11 @@ package ass1.tests;
 import ass1.CircularGameObject;
 import ass1.GameObject;
 import ass1.LineGameObject;
+import ass1.PolygonalGameObject;
 import ass1.math.Vector3;
 import junit.framework.TestCase;
 import org.junit.Test;
 
-/**
- * Created by Thomas on 13/08/2016.
- */
 public class HitboxTest extends TestCase {
 
 	@Test
@@ -77,6 +75,34 @@ public class HitboxTest extends TestCase {
 		assertTrue(obj.collides(p));
 
 		p = new Vector3(3.0, 5.0);
+
+		assertFalse(obj.collides(p));
+	}
+
+	@Test
+	public void testPolygon0() {
+		// This tests a square.
+		GameObject obj = new PolygonalGameObject(GameObject.ROOT, new double[]{-1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0}, null, null);
+
+		Vector3 p = new Vector3(0.0, 0.0);
+
+		assertTrue(obj.collides(p));
+
+		p = new Vector3(2.0, 0.0);
+
+		assertFalse(obj.collides(p));
+	}
+
+	@Test
+	public void testPolygon1() {
+		// This tests a triangle.
+		GameObject obj = new PolygonalGameObject(GameObject.ROOT, new double[]{-1.0, -1.0, 1.0, -1.0, 0.0, 1.0}, null, null);
+
+		Vector3 p = new Vector3(0.0, 0.0);
+
+		assertTrue(obj.collides(p));
+
+		p = new Vector3(1.0, 1.0);
 
 		assertFalse(obj.collides(p));
 	}
