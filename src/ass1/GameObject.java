@@ -567,7 +567,7 @@ public class GameObject {
 	 * Returns whether the given point collides with this object.
 	 * The z axis is ignored in this collision.
 	 *
-	 * @param p
+	 * @param p The global coordinate of the point.
 	 * @return
 	 */
 	public boolean collides(double[] p) {
@@ -578,8 +578,8 @@ public class GameObject {
 	 * Returns whether the given point collides with this object.
 	 * The z axis is ignored in this collision.
 	 *
-	 * This should be overriden by any class that extends this and wants collisions.
-	 * @param v
+	 * This should be overridden by any class that extends this and wants collisions.
+	 * @param v The global coordinate of the point.
 	 * @return
 	 */
 	public boolean collides(Vector3 v) {

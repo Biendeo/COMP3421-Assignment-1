@@ -9,6 +9,7 @@ import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.util.FPSAnimator;
 
 import ass1.*;
+import ass1.math.Vector3;
 
 /**
  * A simple class to view MyCoolGameObject
@@ -20,16 +21,15 @@ public class TestMyCoolGameObject {
 	public static void createTestObjects(){
 		
 		//Should look good when we create using the default constructor
-		//MyCoolGameObject cgo = new MyCoolGameObject();
+		MyCoolGameObject cgo = new MyCoolGameObject(GameObject.ROOT, new double[]{1.0, 1.0, 1.0, 1.0}, new double[]{0.9, 0.9, 0.9, 1.0});
 		
 		// Should not break if we apply transformations for example
 		// If we uncommented these lines (or wrote other transformations) 
 		// it should not break your object
-		/**
+
 		cgo.translate(-0.2,0.2);
-		cgo.rotate(45);
+		cgo.rotate(new Vector3(0.0, 45.0, 0.0));
 		cgo.scale(0.25);
-		**/    
 	}
    
     /**

@@ -35,7 +35,8 @@ public class MyCoolGameObject extends CircularGameObject {
     
     @Override
     public void update(double dt) {
-    	rotate(new Vector3(0.0, dt * 50, 0.0));
+    	// TODO: I noticed this seems to rotate the X, Y and Z axes separately. Fix this.
+    	rotate(new Vector3(0.0, 0.0, dt * 50.0));
     }
 
 
