@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class AsteroidsRules extends GameObject {
 
-	private static final Vector3 playerStartingPosition = new Vector3(0.0, -90.0);
+	private static final Vector3 playerStartingPosition = new Vector3(0.0, -20.0);
 
 	private int lives;
 	private int score;
@@ -34,7 +34,7 @@ public class AsteroidsRules extends GameObject {
 
 	public void newGame() {
 		player = new AsteroidsPlayer(GameObject.ROOT);
-		player.scale(new Vector3(10.0, 10.0, 10.0));
+		player.translate(playerStartingPosition);
 		asteroids.clear();
 		laserShots.clear();
 		otherObjects.clear();
