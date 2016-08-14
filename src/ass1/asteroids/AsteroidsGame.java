@@ -37,11 +37,12 @@ public class AsteroidsGame {
 		camera.setScale(new Vector3(cameraZoom, cameraZoom, cameraZoom));
 		camera.translate(new Vector3(0.0, 0.0, 5.0));
 		camera.enableDepthBuffer();
-		GameObject rules = new AsteroidsRules(GameObject.ROOT);
+		AsteroidsRules rules = new AsteroidsRules(GameObject.ROOT);
 
 		// Add the game engine
 		GameEngine engine = new GameEngine(camera);
 		panel.addGLEventListener(engine);
+		panel.addKeyListener(rules.getPlayerKeyListener());
 
 		FPSAnimator animator = new FPSAnimator(windowFramerate);
 		animator.add(panel);

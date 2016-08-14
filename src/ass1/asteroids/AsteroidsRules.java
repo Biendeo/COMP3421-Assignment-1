@@ -3,6 +3,7 @@ package ass1.asteroids;
 import ass1.GameObject;
 import ass1.math.Vector3;
 
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +21,6 @@ public class AsteroidsRules extends GameObject {
 	private List<AsteroidsAsteroid> asteroids;
 	private List<AsteroidsLaser> laserShots;
 	private List<GameObject> otherObjects;
-
-
-
 
 	public AsteroidsRules(GameObject parent) {
 		super(parent);
@@ -53,6 +51,10 @@ public class AsteroidsRules extends GameObject {
 		}
 
 		newGame();
+	}
+
+	public KeyListener getPlayerKeyListener() {
+		return (KeyListener)player;
 	}
 
 }
