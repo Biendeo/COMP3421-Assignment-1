@@ -9,17 +9,24 @@ public class AsteroidsLaser extends GameObject {
 	private static final double[] dotColor = new double[]{1.0, 1.0, 1.0, 1.0};
 	private static final double dotSize = 3.0;
 
+	private AsteroidsRules rules;
+
 	private double angle;
 
-	public AsteroidsLaser(GameObject parent, double angle) {
+	public AsteroidsLaser(GameObject parent, AsteroidsRules rules, double angle) {
 		super(parent);
 
+		this.rules = rules;
 		this.angle = angle;
 	}
 
 	@Override
 	public void update(double dt) {
 		translate(new Vector3(-Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle))));
+
+		if (getPositionVector().x > rules.getCameraZoom() || getPositionVector().x < -rules.getCameraZoom() || getPositionVector().y > rules.getCameraZoom() || getPositionVector().y < -rules.getCameraZoom()) {
+			rules.deleteLaser(this);
+		}
 	}
 
 

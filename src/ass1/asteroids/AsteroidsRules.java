@@ -67,11 +67,14 @@ public class AsteroidsRules extends GameObject {
 		Vector3 position = player.getPositionVector();
 		Vector3 rotation = player.getRotationVector();
 		Vector3 scale = player.getScaleVector();
-		AsteroidsLaser laser = new AsteroidsLaser(GameObject.ROOT, rotation.z);
+		AsteroidsLaser laser = new AsteroidsLaser(GameObject.ROOT, this, rotation.z);
 		laser.translate(position);
-		laser.rotate(rotation);
 		laserShots.add(laser);
+	}
 
+	public void deleteLaser(AsteroidsLaser laser) {
+		laserShots.remove(laser);
+		laser.destroy();
 	}
 
 }
