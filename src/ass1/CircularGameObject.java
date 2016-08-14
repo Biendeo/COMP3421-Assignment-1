@@ -11,7 +11,7 @@ import com.jogamp.opengl.GL2;
 public class CircularGameObject extends GameObject {
 	
 	// This value is written in the spec.
-	private final static int sides = 32;
+	protected final static int sides = 32;
 
 	private double myRadius;
 	private double[] myFillColour;

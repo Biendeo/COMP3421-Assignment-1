@@ -2,6 +2,7 @@ package ass1.asteroids;
 
 import javax.swing.JFrame;
 
+import ass1.math.Vector3;
 import com.jogamp.opengl.GLCapabilities;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
@@ -26,10 +27,11 @@ public class AsteroidsGame {
 	private static final int windowWidth = 800;
 	private static final int windowHeight = 800;
 	
-	public void main(String[] args) {
-        initialiseOpenGL();
-        createEngine();
-        initialiseObjects();
+	public static void main(String[] args) {
+		AsteroidsGame g = new AsteroidsGame();
+        g.initialiseOpenGL();
+        g.createEngine();
+        g.initialiseObjects();
 	}
 	
 	public void initialiseOpenGL() {
@@ -58,6 +60,8 @@ public class AsteroidsGame {
 	}
 	
 	public void initialiseObjects() {
-		
+		Camera camera = new Camera(GameObject.ROOT);
+		camera.setScale(new Vector3(100.0, 100.0, 100.0));
+		GameObject rules = new AsteroidsRules(GameObject.ROOT);
 	}
 }
