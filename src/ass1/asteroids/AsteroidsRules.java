@@ -38,6 +38,9 @@ public class AsteroidsRules extends GameObject {
 		asteroids.clear();
 		laserShots.clear();
 		otherObjects.clear();
+
+		// This is just for testing collisions.
+		AsteroidsAsteroid asteroid1 = new AsteroidsAsteroid(GameObject.ROOT, 6.0);
 	}
 
 	public void resetGame() {

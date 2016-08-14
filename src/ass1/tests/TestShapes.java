@@ -52,9 +52,6 @@ public class TestShapes {
         MyCoolGameObject o2 = new MyCoolGameObject(GameObject.ROOT, new double[]{0.5, 0.2, 0.2, 1.0}, new double[]{0.6, 0.1, 0.1, 1.0});
         o2.translate(new Vector3(-1.3, 0.8, -0.5));
         o2.setRotationVector(new Vector3(0.0, 45.0, 0.0));
-
-        AsteroidsAsteroid player = new AsteroidsAsteroid(GameObject.ROOT, 1.0);
-        player.translate(0.6, 0.6);
 	}
    
     /**
