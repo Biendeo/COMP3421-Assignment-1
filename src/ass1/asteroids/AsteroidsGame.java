@@ -16,8 +16,6 @@ public class AsteroidsGame {
 	private static final int windowWidth = 800;
 	private static final int windowHeight = 800;
 
-	private static final double cameraZoom = 25.0;
-
 	/**
 	 * A simple example of how to use PolygonalGameObject, CircularGameObject and LineObject
 	 *
@@ -33,11 +31,11 @@ public class AsteroidsGame {
 		// create a GLJPanel to draw on
 		GLJPanel panel = new GLJPanel(glcapabilities);
 
+		AsteroidsRules rules = new AsteroidsRules(GameObject.ROOT);
 		Camera camera = new Camera(GameObject.ROOT);
-		camera.setScale(new Vector3(cameraZoom, cameraZoom, cameraZoom));
+		camera.setScale(new Vector3(rules.getCameraZoom(), rules.getCameraZoom(), rules.getCameraZoom()));
 		camera.translate(new Vector3(0.0, 0.0, 5.0));
 		camera.enableDepthBuffer();
-		AsteroidsRules rules = new AsteroidsRules(GameObject.ROOT);
 
 		// Add the game engine
 		GameEngine engine = new GameEngine(camera);

@@ -23,14 +23,17 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 	public static final double[] line3 = new double[]{0.0, 1.0, -0.5, -1.0};
 	public static final double[] lineColor = new double[]{1.0, 1.0, 1.0, 1.0};
 
+	private AsteroidsRules rules;
+
 	private Vector3 velocity;
 
 	private boolean movingForward;
 	private boolean movingLeft;
 	private boolean movingRight;
 
-	public AsteroidsPlayer(GameObject parent) {
+	public AsteroidsPlayer(GameObject parent, AsteroidsRules rules) {
 		super(parent, hitboxPoints, null, null);
+		this.rules = rules;
 		GameObject lineObj1 = new LineGameObject(this, line1[0], line1[1], line1[2], line1[3], lineColor);
 		GameObject lineObj2 = new LineGameObject(this, line2[0], line2[1], line2[2], line2[3], lineColor);
 		GameObject lineObj3 = new LineGameObject(this, line3[0], line3[1], line3[2], line3[3], lineColor);
@@ -81,7 +84,7 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 	}
 
 	private void fireShot() {
-
+		rules.fireShot();
 	}
 
 	@Override

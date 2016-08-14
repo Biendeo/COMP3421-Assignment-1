@@ -14,6 +14,8 @@ public class AsteroidsRules extends GameObject {
 
 	private static final Vector3 playerStartingPosition = new Vector3(0.0, -20.0);
 
+	public static final double cameraZoom = 25;
+
 	private int lives;
 	private int score;
 
@@ -31,7 +33,7 @@ public class AsteroidsRules extends GameObject {
 	}
 
 	public void newGame() {
-		player = new AsteroidsPlayer(GameObject.ROOT);
+		player = new AsteroidsPlayer(GameObject.ROOT, this);
 		player.translate(playerStartingPosition);
 		asteroids.clear();
 		laserShots.clear();
@@ -55,6 +57,21 @@ public class AsteroidsRules extends GameObject {
 
 	public KeyListener getPlayerKeyListener() {
 		return (KeyListener)player;
+	}
+
+	public double getCameraZoom() {
+		return cameraZoom;
+	}
+
+	public void fireShot() {
+		Vector3 position = player.getPositionVector();
+		Vector3 rotation = player.getRotationVector();
+		Vector3 scale = player.getScaleVector();
+		AsteroidsLaser laser = new AsteroidsLaser(GameObject.ROOT, rotation.z);
+		laser.translate(position);
+		laser.rotate(rotation);
+		laserShots.add(laser);
+
 	}
 
 }
