@@ -6,9 +6,11 @@ import ass1.math.Vector3;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
- * A class that contains player data about the game.
+ * A class that contains player data about the game, and handles functions relating to the game's
+ * state.
  */
 public class AsteroidsRules extends GameObject {
 
@@ -18,11 +20,15 @@ public class AsteroidsRules extends GameObject {
 
 	public static final double playerDeadTime = 3.0;
 
+	public static final double asteroidDelay = 2.0;
+
 	private int lives;
 	private int score;
 
 	public boolean playerDead;
 	public double playerDeadTimeLeft;
+
+	public double timeToNextAsteroid;
 
 	private AsteroidsPlayer player;
 	private List<AsteroidsAsteroid> asteroids;
@@ -44,14 +50,19 @@ public class AsteroidsRules extends GameObject {
 		laserShots.clear();
 		otherObjects.clear();
 
-		// This is just for testing collisions.
-		AsteroidsAsteroid asteroid1 = new AsteroidsAsteroid(GameObject.ROOT, this, 6.0);
-		asteroids.add(asteroid1);
+		lives = 3;
+		timeToNextAsteroid = asteroidDelay;
 	}
 
 	@Override
 	public void update(double dt) {
 		processLaserCollisions();
+		timeToNextAsteroid -= dt;
+		if (timeToNextAsteroid <= 0) {
+			timeToNextAsteroid += asteroidDelay;
+			spawnRandomAsteroid();
+		}
+
 		if (playerDead) {
 			playerDeadTimeLeft -= dt;
 			if (playerDeadTimeLeft < 0) {
@@ -140,8 +151,12 @@ public class AsteroidsRules extends GameObject {
 	public void loseLife() {
 		--lives;
 		player.show(false);
-		playerDead = true;
-		playerDeadTimeLeft = playerDeadTime;
+		if (lives <= 0) {
+			gameOver();
+		} else {
+			playerDead = true;
+			playerDeadTimeLeft = playerDeadTime;
+		}
 	}
 
 	public void spawnPlayer() {
@@ -149,6 +164,43 @@ public class AsteroidsRules extends GameObject {
 		player.resetPosition();
 		playerDead = false;
 		playerDeadTimeLeft = 0.0;
+	}
+
+	public void gameOver() {
+		// TODO: Show the score, or something like that.
+	}
+
+	public void spawnRandomAsteroid() {
+		Random r = new Random();
+
+		// The spawn distance is a fair distance away from the action.
+		final double spawnDistance = cameraZoom * 4;
+
+		// The size of the asteroid is randomised.
+		double size = r. nextDouble() * (AsteroidsAsteroid.maximumSize - AsteroidsAsteroid.minimumSize) + AsteroidsAsteroid.minimumSize;
+
+		// Same with its velocity magnitude.
+		double decidedVelocity = r.nextDouble() * (AsteroidsAsteroid.maximumVelocity - AsteroidsAsteroid.minimumVelocity) + AsteroidsAsteroid.minimumVelocity;
+
+		// And the angle.
+		double decidedAngle = r.nextDouble() * 360 - 180;
+
+		// The velocity is then converted to a Vector3.
+		Vector3 velocity = new Vector3(decidedVelocity * -Math.sin(Math.toRadians(decidedAngle)), decidedVelocity * Math.cos(Math.toRadians(decidedAngle)));
+
+		// Then we pick a random point on the screen.
+		// TODO: Not all asteroids go towards the screen, sort that out.
+		Vector3 randomPoint = new Vector3(r.nextDouble() * 2 * cameraZoom - cameraZoom, r.nextDouble() * 2 * cameraZoom - cameraZoom);
+
+		// We then set the asteroid's starting position as that spawn distance away from the point
+		// in the reverse direction to its velocity.
+		Vector3 startingPosition = randomPoint.add(new Vector3(spawnDistance * Math.sin(Math.toDegrees(-decidedAngle)), spawnDistance * -Math.cos(Math.toDegrees(-decidedAngle))));
+
+		// Then we just create the asteroid.
+		AsteroidsAsteroid asteroid = new AsteroidsAsteroid(GameObject.ROOT, this, size, velocity);
+		asteroid.translate(startingPosition);
+		asteroids.add(asteroid);
+
 	}
 
 }
