@@ -24,7 +24,9 @@ public class AsteroidsLaser extends GameObject {
 	public void update(double dt) {
 		translate(new Vector3(-Math.sin(Math.toRadians(angle)), Math.cos(Math.toRadians(angle))));
 
-		if (getPositionVector().x > rules.getCameraZoom() || getPositionVector().x < -rules.getCameraZoom() || getPositionVector().y > rules.getCameraZoom() || getPositionVector().y < -rules.getCameraZoom()) {
+		double cameraZoom = rules.getCameraZoom() + 2;
+
+		if (getPositionVector().x > cameraZoom || getPositionVector().x < -cameraZoom || getPositionVector().y > cameraZoom || getPositionVector().y < -cameraZoom) {
 			rules.deleteLaser(this);
 		}
 	}

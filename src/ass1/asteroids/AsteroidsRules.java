@@ -40,7 +40,14 @@ public class AsteroidsRules extends GameObject {
 		otherObjects.clear();
 
 		// This is just for testing collisions.
-		AsteroidsAsteroid asteroid1 = new AsteroidsAsteroid(GameObject.ROOT, 6.0);
+		AsteroidsAsteroid asteroid1 = new AsteroidsAsteroid(GameObject.ROOT, this, 6.0);
+		asteroids.add(asteroid1);
+	}
+
+	@Override
+	public void update(double dt) {
+		processLaserCollisions();
+		processPlayerCollision();
 	}
 
 	public void resetGame() {
@@ -78,6 +85,41 @@ public class AsteroidsRules extends GameObject {
 	public void deleteLaser(AsteroidsLaser laser) {
 		laserShots.remove(laser);
 		laser.destroy();
+	}
+
+	public void processLaserCollisions() {
+		for (AsteroidsAsteroid a : asteroids) {
+			for (AsteroidsLaser l : laserShots) {
+				if (a.collides(l.getGlobalPositionVector())) {
+					// TODO: Track score and make a nice particle effect later.
+					a.destroy();
+					asteroids.remove(a);
+					l.destroy();
+					laserShots.remove(l);
+					break;
+				}
+			}
+		}
+	}
+
+	public void processPlayerCollision() {
+		for (AsteroidsAsteroid a : asteroids) {
+			Vector3 playerGlobalPosition = player.getGlobalPositionVector();
+			Vector3 playerGlobalRotation = player.getGlobalRotationVector();
+
+			Vector3 playerVertex1 = new Vector3(player.hitboxPoints[0], player.hitboxPoints[1]);
+			Vector3 playerVertex2 = new Vector3(player.hitboxPoints[2], player.hitboxPoints[3]);
+			Vector3 playerVertex3 = new Vector3(player.hitboxPoints[4], player.hitboxPoints[5]);
+			// TODO: Confirm this is correct.
+			Vector3 playerVertex1Global = new Vector3(playerVertex1.x * -Math.sin(Math.toRadians(playerGlobalRotation.z)), playerVertex1.y * Math.cos(Math.toRadians(playerGlobalRotation.z))).add(playerGlobalPosition);
+			Vector3 playerVertex2Global = new Vector3(playerVertex2.x * -Math.sin(Math.toRadians(playerGlobalRotation.z)), playerVertex2.y * Math.cos(Math.toRadians(playerGlobalRotation.z))).add(playerGlobalPosition);
+			Vector3 playerVertex3Global = new Vector3(playerVertex3.x * -Math.sin(Math.toRadians(playerGlobalRotation.z)), playerVertex3.y * Math.cos(Math.toRadians(playerGlobalRotation.z))).add(playerGlobalPosition);
+
+			if (a.collides(playerVertex1Global) || a.collides(playerVertex2Global) || a.collides(playerVertex3Global)) {
+				// TODO: Add a game over function.
+				player.destroy();
+			}
+		}
 	}
 
 }

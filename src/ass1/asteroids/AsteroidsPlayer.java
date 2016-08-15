@@ -65,8 +65,7 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 
 		Vector3 position = getPositionVector();
 
-		// TODO: Get this value from the rules object instead of hard-coding it.
-		double cameraZoom = 25.0 + 2;
+		double cameraZoom = rules.getCameraZoom() + 2;
 
 		if (position.x > cameraZoom) {
 			position.subtractSelf(new Vector3(2 * cameraZoom, 0.0, 0.0));

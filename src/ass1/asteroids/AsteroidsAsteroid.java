@@ -41,6 +41,9 @@ public class AsteroidsAsteroid extends CircularGameObject {
 		}
 
 		rotationSpeed = (r.nextDouble() - 0.5) * maximumRotationSpeed;
+
+		// TODO: Set a velocity;
+		velocity = new Vector3();
 	}
 
 	@Override
