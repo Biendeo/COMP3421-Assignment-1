@@ -12,12 +12,17 @@ import java.util.List;
  */
 public class AsteroidsRules extends GameObject {
 
-	private static final Vector3 playerStartingPosition = new Vector3(0.0, -20.0);
+	public static final Vector3 playerStartingPosition = new Vector3(0.0, -20.0);
 
 	public static final double cameraZoom = 25;
 
+	public static final double playerDeadTime = 3.0;
+
 	private int lives;
 	private int score;
+
+	public boolean playerDead;
+	public double playerDeadTimeLeft;
 
 	private AsteroidsPlayer player;
 	private List<AsteroidsAsteroid> asteroids;
@@ -34,7 +39,7 @@ public class AsteroidsRules extends GameObject {
 
 	public void newGame() {
 		player = new AsteroidsPlayer(GameObject.ROOT, this);
-		player.translate(playerStartingPosition);
+		spawnPlayer();
 		asteroids.clear();
 		laserShots.clear();
 		otherObjects.clear();
@@ -47,7 +52,15 @@ public class AsteroidsRules extends GameObject {
 	@Override
 	public void update(double dt) {
 		processLaserCollisions();
-		processPlayerCollision();
+		if (playerDead) {
+			playerDeadTimeLeft -= dt;
+			if (playerDeadTimeLeft < 0) {
+				// TODO: This might be a problem if an asteroid is on top of the player when they spawn.
+				spawnPlayer();
+			}
+		} else {
+			processPlayerCollision();
+		}
 	}
 
 	public void resetGame() {
@@ -82,6 +95,11 @@ public class AsteroidsRules extends GameObject {
 		laserShots.add(laser);
 	}
 
+	public void deleteAsteroid(AsteroidsAsteroid asteroid) {
+		asteroids.remove(asteroid);
+		asteroid.destroy();
+	}
+
 	public void deleteLaser(AsteroidsLaser laser) {
 		laserShots.remove(laser);
 		laser.destroy();
@@ -92,10 +110,8 @@ public class AsteroidsRules extends GameObject {
 			for (AsteroidsLaser l : laserShots) {
 				if (a.collides(l.getGlobalPositionVector())) {
 					// TODO: Track score and make a nice particle effect later.
-					a.destroy();
-					asteroids.remove(a);
-					l.destroy();
-					laserShots.remove(l);
+					deleteAsteroid(a);
+					deleteLaser(l);
 					break;
 				}
 			}
@@ -116,10 +132,23 @@ public class AsteroidsRules extends GameObject {
 			Vector3 playerVertex3Global = new Vector3(playerVertex3.x * -Math.sin(Math.toRadians(playerGlobalRotation.z)), playerVertex3.y * Math.cos(Math.toRadians(playerGlobalRotation.z))).add(playerGlobalPosition);
 
 			if (a.collides(playerVertex1Global) || a.collides(playerVertex2Global) || a.collides(playerVertex3Global)) {
-				// TODO: Add a game over function.
-				player.destroy();
+				loseLife();
 			}
 		}
+	}
+
+	public void loseLife() {
+		--lives;
+		player.show(false);
+		playerDead = true;
+		playerDeadTimeLeft = playerDeadTime;
+	}
+
+	public void spawnPlayer() {
+		player.show(true);
+		player.resetPosition();
+		playerDead = false;
+		playerDeadTimeLeft = 0.0;
 	}
 
 }

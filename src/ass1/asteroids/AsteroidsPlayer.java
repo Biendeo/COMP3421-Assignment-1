@@ -47,43 +47,47 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 
 	@Override
 	public void update(double dt) {
-		if (movingForward) {
-			double rotation = getRotationVector().z;
-			velocity.addSelf(new Vector3(-Math.sin(Math.toRadians(rotation)) * thrustSpeed * dt, Math.cos(Math.toRadians(rotation)) * thrustSpeed * dt));
-			if (velocity.modulus() > maximumSpeed) {
-				velocity.divideSelf(velocity.modulus() / maximumSpeed);
+		if (isShowing()) {
+			if (movingForward) {
+				double rotation = getRotationVector().z;
+				velocity.addSelf(new Vector3(-Math.sin(Math.toRadians(rotation)) * thrustSpeed * dt, Math.cos(Math.toRadians(rotation)) * thrustSpeed * dt));
+				if (velocity.modulus() > maximumSpeed) {
+					velocity.divideSelf(velocity.modulus() / maximumSpeed);
+				}
 			}
+			if (movingLeft) {
+				rotate(new Vector3(0.0, 0.0, turnSpeed * dt));
+			}
+			if (movingRight) {
+				rotate(new Vector3(0.0, 0.0, -turnSpeed * dt));
+			}
+
+			translate(velocity.multiply(dt));
+
+			Vector3 position = getPositionVector();
+
+			double cameraZoom = rules.getCameraZoom() + 2;
+
+			if (position.x > cameraZoom) {
+				position.subtractSelf(new Vector3(2 * cameraZoom, 0.0, 0.0));
+			} else if (position.x < -cameraZoom) {
+				position.addSelf(new Vector3(2 * cameraZoom, 0.0, 0.0));
+			}
+
+			if (position.y > cameraZoom) {
+				position.subtractSelf(new Vector3(0.0, 2 * cameraZoom, 0.0));
+			} else if (position.y < -cameraZoom) {
+				position.addSelf(new Vector3(0.0, 2 * cameraZoom, 0.0));
+			}
+
+			setPosition(position);
 		}
-		if (movingLeft) {
-			rotate(new Vector3(0.0, 0.0, turnSpeed * dt));
-		}
-		if (movingRight) {
-			rotate(new Vector3(0.0, 0.0, -turnSpeed * dt));
-		}
-
-		translate(velocity.multiply(dt));
-
-		Vector3 position = getPositionVector();
-
-		double cameraZoom = rules.getCameraZoom() + 2;
-
-		if (position.x > cameraZoom) {
-			position.subtractSelf(new Vector3(2 * cameraZoom, 0.0, 0.0));
-		} else if (position.x < -cameraZoom) {
-			position.addSelf(new Vector3(2 * cameraZoom, 0.0, 0.0));
-		}
-
-		if (position.y > cameraZoom) {
-			position.subtractSelf(new Vector3(0.0, 2 * cameraZoom, 0.0));
-		} else if (position.y < -cameraZoom) {
-			position.addSelf(new Vector3(0.0, 2 * cameraZoom, 0.0));
-		}
-
-		setPosition(position);
 	}
 
 	private void fireShot() {
-		rules.fireShot();
+		if (isShowing()) {
+			rules.fireShot();
+		}
 	}
 
 	@Override
@@ -122,5 +126,11 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 				movingRight = false;
 				break;
 		}
+	}
+
+	public void resetPosition() {
+		velocity = new Vector3();
+		setPosition(rules.playerStartingPosition);
+		setRotationVector(new Vector3());
 	}
 }
