@@ -116,6 +116,11 @@ public class AsteroidsRules extends GameObject {
 		laser.destroy();
 	}
 
+	public void deleteObject(GameObject object) {
+		otherObjects.remove(object);
+		object.destroy();
+	}
+
 	public void processLaserCollisions() {
 		for (AsteroidsAsteroid a : asteroids) {
 			for (AsteroidsLaser l : laserShots) {
@@ -150,6 +155,7 @@ public class AsteroidsRules extends GameObject {
 
 	public void loseLife() {
 		--lives;
+		createPlayerExplosion();
 		player.show(false);
 		if (lives <= 0) {
 			gameOver();
@@ -201,6 +207,12 @@ public class AsteroidsRules extends GameObject {
 		asteroid.translate(startingPosition);
 		asteroids.add(asteroid);
 
+	}
+
+	public void createPlayerExplosion() {
+		AsteroidsExplosion explosion = new AsteroidsExplosion(GameObject.ROOT, this, 50, 20.0, 3.0);
+		explosion.translate(player.getPositionVector());
+		otherObjects.add(explosion);
 	}
 
 }
