@@ -30,6 +30,7 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 	private boolean movingForward;
 	private boolean movingLeft;
 	private boolean movingRight;
+	private boolean shooting;
 
 	public AsteroidsPlayer(GameObject parent, AsteroidsRules rules) {
 		super(parent, hitboxPoints, null, null);
@@ -43,6 +44,7 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 		movingForward = false;
 		movingLeft = false;
 		movingRight = false;
+		shooting = false;
 	}
 
 	@Override
@@ -108,7 +110,10 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 				movingRight = true;
 				break;
 			case KeyEvent.VK_SPACE:
-				fireShot();
+				if (!shooting) {
+					fireShot();
+					shooting = true;
+				}
 				break;
 		}
 	}
@@ -124,6 +129,9 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 				break;
 			case KeyEvent.VK_RIGHT:
 				movingRight = false;
+				break;
+			case KeyEvent.VK_SPACE:
+				shooting = false;
 				break;
 		}
 	}
