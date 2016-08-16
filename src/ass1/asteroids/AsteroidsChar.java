@@ -180,7 +180,7 @@ public class AsteroidsChar extends GameObject {
 	}
 
 	private void createI() {
-
+		lines.add(new LineGameObject(this, new Vector3(0.0, 0.7), new Vector3(0.0, -0.7), lineColor));
 	}
 
 	private void createJ() {
@@ -192,7 +192,8 @@ public class AsteroidsChar extends GameObject {
 	}
 
 	private void createL() {
-
+		lines.add(new LineGameObject(this, new Vector3(-0.4, 0.7), new Vector3(-0.4, -0.7), lineColor));
+		lines.add(new LineGameObject(this, new Vector3(-0.4, -0.7), new Vector3(0.4, -0.7), lineColor));
 	}
 
 	private void createM() {

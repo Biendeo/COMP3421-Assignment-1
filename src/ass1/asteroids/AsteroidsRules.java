@@ -36,6 +36,7 @@ public class AsteroidsRules extends GameObject {
 	private List<GameObject> otherObjects;
 
 	private AsteroidsString scoreString;
+	private AsteroidsString livesString;
 
 	public AsteroidsRules(GameObject parent) {
 		super(parent);
@@ -60,6 +61,14 @@ public class AsteroidsRules extends GameObject {
 		otherObjects.add(scoreString);
 
 		lives = 3;
+
+		AsteroidsString livesText = new AsteroidsString(GameObject.ROOT, "LIVES", false, true);
+		livesText.translate(new Vector3(cameraZoom, cameraZoom - 1));
+		otherObjects.add(livesText);
+		livesString = new AsteroidsString(GameObject.ROOT, Integer.toString(lives), false, true);
+		livesString.translate(new Vector3(cameraZoom, cameraZoom - 3));
+		otherObjects.add(livesString);
+
 		timeToNextAsteroid = asteroidDelay;
 	}
 
@@ -166,6 +175,7 @@ public class AsteroidsRules extends GameObject {
 
 	public void loseLife() {
 		--lives;
+		updateLives();
 		createPlayerExplosion();
 		player.show(false);
 		if (lives <= 0) {
@@ -235,9 +245,10 @@ public class AsteroidsRules extends GameObject {
 	}
 
 	public void updateScore() {
-		scoreString.destroy();
-		// TODO: Make it so that the string can just be updated rather than deleting the object.
-		scoreString = new AsteroidsString(GameObject.ROOT, Integer.toString(score), true, false);
-		scoreString.translate(new Vector3(-cameraZoom, cameraZoom - 3));
+		scoreString.updateString(Integer.toString(score));
+	}
+
+	public void updateLives() {
+		livesString.updateString(Integer.toString(lives));
 	}
 }

@@ -23,6 +23,10 @@ public class AsteroidsString extends GameObject {
 		this.rightAlign = rightAlign;
 		characters = new ArrayList<AsteroidsChar>();
 
+		createString();
+	}
+
+	private void createString() {
 		Vector3 translateOffset = new Vector3();
 
 		if (!leftAlign && !rightAlign) {
@@ -36,6 +40,16 @@ public class AsteroidsString extends GameObject {
 			AsteroidsChar newChar = new AsteroidsChar(this, c);
 			newChar.translate(translateOffset);
 			translateOffset.addSelf(new Vector3(1.0, 0.0));
+			characters.add(newChar);
 		}
+	}
+
+	public void updateString(String string) {
+		for (AsteroidsChar c : characters) {
+			c.destroy();
+		}
+		characters.clear();
+		this.string = string;
+		createString();
 	}
 }
