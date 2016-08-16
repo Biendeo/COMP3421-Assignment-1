@@ -125,7 +125,8 @@ public class AsteroidsRules extends GameObject {
 		for (AsteroidsAsteroid a : asteroids) {
 			for (AsteroidsLaser l : laserShots) {
 				if (a.collides(l.getGlobalPositionVector())) {
-					// TODO: Track score and make a nice particle effect later.
+					// TODO: Track score.
+					createAsteroidExplosion(a);
 					deleteAsteroid(a);
 					deleteLaser(l);
 					break;
@@ -147,7 +148,7 @@ public class AsteroidsRules extends GameObject {
 			Vector3 playerVertex2Global = new Vector3(playerVertex2.x * -Math.sin(Math.toRadians(playerGlobalRotation.z)), playerVertex2.y * Math.cos(Math.toRadians(playerGlobalRotation.z))).add(playerGlobalPosition);
 			Vector3 playerVertex3Global = new Vector3(playerVertex3.x * -Math.sin(Math.toRadians(playerGlobalRotation.z)), playerVertex3.y * Math.cos(Math.toRadians(playerGlobalRotation.z))).add(playerGlobalPosition);
 
-			if (a.collides(playerVertex1Global) || a.collides(playerVertex2Global) || a.collides(playerVertex3Global)) {
+			if ((a.collides(playerVertex1Global) || a.collides(playerVertex2Global) || a.collides(playerVertex3Global)) && player.isShowing()) {
 				loseLife();
 			}
 		}
@@ -207,6 +208,12 @@ public class AsteroidsRules extends GameObject {
 		asteroid.translate(startingPosition);
 		asteroids.add(asteroid);
 
+	}
+
+	public void createAsteroidExplosion(AsteroidsAsteroid asteroid) {
+		AsteroidsExplosion explosion = new AsteroidsExplosion(GameObject.ROOT, this, 25, asteroid.getRadius() * 3.0, 1.0);
+		explosion.translate(asteroid.getPositionVector());
+		otherObjects.add(asteroid);
 	}
 
 	public void createPlayerExplosion() {
