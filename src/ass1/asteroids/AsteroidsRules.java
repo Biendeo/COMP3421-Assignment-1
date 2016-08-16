@@ -35,6 +35,8 @@ public class AsteroidsRules extends GameObject {
 	private List<AsteroidsLaser> laserShots;
 	private List<GameObject> otherObjects;
 
+	private AsteroidsString scoreString;
+
 	public AsteroidsRules(GameObject parent) {
 		super(parent);
 		asteroids = new ArrayList<AsteroidsAsteroid>();
@@ -49,6 +51,13 @@ public class AsteroidsRules extends GameObject {
 		asteroids.clear();
 		laserShots.clear();
 		otherObjects.clear();
+
+		AsteroidsString scoreText = new AsteroidsString(GameObject.ROOT, "SCORE", true, false);
+		scoreText.translate(new Vector3(-cameraZoom, cameraZoom - 1));
+		otherObjects.add(scoreText);
+		scoreString = new AsteroidsString(GameObject.ROOT, Integer.toString(score), true, false);
+		scoreString.translate(new Vector3(-cameraZoom, cameraZoom - 3));
+		otherObjects.add(scoreString);
 
 		lives = 3;
 		timeToNextAsteroid = asteroidDelay;
@@ -125,7 +134,8 @@ public class AsteroidsRules extends GameObject {
 		for (AsteroidsAsteroid a : asteroids) {
 			for (AsteroidsLaser l : laserShots) {
 				if (a.collides(l.getGlobalPositionVector())) {
-					// TODO: Track score.
+					score += a.getRadius() * a.getRadius() * 100;
+					updateScore();
 					createAsteroidExplosion(a);
 					deleteAsteroid(a);
 					deleteLaser(l);
@@ -174,7 +184,9 @@ public class AsteroidsRules extends GameObject {
 	}
 
 	public void gameOver() {
-		// TODO: Show the score, or something like that.
+		AsteroidsGameOverString gameOverString = new AsteroidsGameOverString(GameObject.ROOT);
+		gameOverString.setScale(new Vector3(5.0, 5.0, 5.0));
+		gameOverString.translate(new Vector3(0.0, 8.0));
 	}
 
 	public void spawnRandomAsteroid() {
@@ -222,4 +234,10 @@ public class AsteroidsRules extends GameObject {
 		otherObjects.add(explosion);
 	}
 
+	public void updateScore() {
+		scoreString.destroy();
+		// TODO: Make it so that the string can just be updated rather than deleting the object.
+		scoreString = new AsteroidsString(GameObject.ROOT, Integer.toString(score), true, false);
+		scoreString.translate(new Vector3(-cameraZoom, cameraZoom - 3));
+	}
 }
