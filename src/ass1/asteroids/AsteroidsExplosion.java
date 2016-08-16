@@ -7,6 +7,7 @@ import com.jogamp.opengl.GL2;
 
 public class AsteroidsExplosion extends CircularGameObject {
 	private static final double[] lineColor = new double[]{1.0, 1.0, 1.0, 1.0};
+	private static final double dotSize = 2.0;
 
 	private AsteroidsRules rules;
 
@@ -38,6 +39,7 @@ public class AsteroidsExplosion extends CircularGameObject {
 	@Override
 	public void drawSelf(GL2 gl) {
 		gl.glColor4d(lineColor[0], lineColor[1], lineColor[2], lineColor[3]);
+		gl.glPointSize((float)dotSize);
 
 		gl.glBegin(GL2.GL_POINTS);
 
