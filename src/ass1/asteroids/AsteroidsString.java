@@ -6,9 +6,6 @@ import ass1.math.Vector3;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Thomas on 16/08/2016.
- */
 public class AsteroidsString extends GameObject {
 	private String string;
 	private boolean leftAlign;

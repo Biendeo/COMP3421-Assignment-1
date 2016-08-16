@@ -5,6 +5,7 @@ import ass1.math.Vector3;
 
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -140,8 +141,10 @@ public class AsteroidsRules extends GameObject {
 	}
 
 	public void processLaserCollisions() {
-		for (AsteroidsAsteroid a : asteroids) {
-			for (AsteroidsLaser l : laserShots) {
+		List<AsteroidsAsteroid> asteroidList = new ArrayList<AsteroidsAsteroid>(asteroids);
+		for (AsteroidsAsteroid a : asteroidList) {
+			List<AsteroidsLaser> laserList = new ArrayList<AsteroidsLaser>(laserShots);
+			for (AsteroidsLaser l : laserList) {
 				if (a.collides(l.getGlobalPositionVector())) {
 					score += a.getRadius() * a.getRadius() * 100;
 					updateScore();

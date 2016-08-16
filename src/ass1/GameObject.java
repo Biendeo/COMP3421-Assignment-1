@@ -1,6 +1,7 @@
 package ass1;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import com.jogamp.opengl.GL2;
@@ -80,7 +81,9 @@ public class GameObject {
 	 * Remove an object and all its children from the scene tree.
 	 */
 	public void destroy() {
-		for (GameObject child : myChildren) {
+		List<GameObject> childrenList = new ArrayList<GameObject>(myChildren);
+
+		for (GameObject child : childrenList) {
 			child.destroy();
 		}
 
