@@ -6,6 +6,11 @@ import ass1.math.Vector3;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class to draw strings on the screen.
+ *
+ * @author Thomas Moffet, z5061905
+ */
 public class AsteroidsString extends GameObject {
 	private String string;
 	private boolean leftAlign;
@@ -13,6 +18,13 @@ public class AsteroidsString extends GameObject {
 
 	private List<AsteroidsChar> characters;
 
+	/**
+	 * Constructs a new string.
+	 * @param parent The parent object.
+	 * @param string The string to show.
+	 * @param leftAlign Whether the string is left-aligned.
+	 * @param rightAlign Whether the string is right-aligned (if it's not left-aligned).
+	 */
 	public AsteroidsString(GameObject parent, String string, boolean leftAlign, boolean rightAlign) {
 		super(parent);
 		this.string = string;
@@ -23,6 +35,9 @@ public class AsteroidsString extends GameObject {
 		createString();
 	}
 
+	/**
+	 * Generates the letters for the string.
+	 */
 	private void createString() {
 		Vector3 translateOffset = new Vector3();
 
@@ -41,6 +56,10 @@ public class AsteroidsString extends GameObject {
 		}
 	}
 
+	/**
+	 * Changes the text in this string.
+	 * @param string
+	 */
 	public void updateString(String string) {
 		for (AsteroidsChar c : characters) {
 			c.destroy();

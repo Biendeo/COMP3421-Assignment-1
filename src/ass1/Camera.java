@@ -99,10 +99,19 @@ public class Camera extends GameObject {
 		}
 	}
 
+	/**
+	 * Turns on the depth buffer flag and changes how the camera draws.
+	 * This is intended for drawing objects on top of other objects, but it changes how regular
+	 * scenes are drawn slightly, so don't use this if you want exact output.
+	 */
 	public void enableDepthBuffer() {
 		depthBufferEnabled = true;
 	}
 
+	/**
+	 * Turns off the depth buffer flag and changes how the camera draws.
+	 *
+	 */
 	public void disableDepthBuffer() {
 		depthBufferEnabled = false;
 	}

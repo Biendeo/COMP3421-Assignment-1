@@ -10,7 +10,9 @@ import java.util.List;
 import java.util.Random;
 
 /**
+ * An asteroid in the game space.
  *
+ * @author Thomas Moffet, z5061905
  */
 public class AsteroidsAsteroid extends CircularGameObject {
 
@@ -32,8 +34,15 @@ public class AsteroidsAsteroid extends CircularGameObject {
 
 	private boolean beenOnScreenBefore;
 
-	public Vector3 velocity;
+	private Vector3 velocity;
 
+	/**
+	 * Creates a new asteroid with the given parameters.
+	 * @param parent The parent object.
+	 * @param rules A reference to the rules.
+	 * @param radius The size of the asteroid.
+	 * @param velocity How fast the asteroid is moving in the x and y directions.
+	 */
 	public AsteroidsAsteroid(GameObject parent, AsteroidsRules rules, double radius, Vector3 velocity) {
 		super(parent, radius, fillColor, lineColor);
 
@@ -42,12 +51,13 @@ public class AsteroidsAsteroid extends CircularGameObject {
 		vertexRadii = new ArrayList<Double>();
 
 		Random r = new Random();
-
+		// The shape of the asteroid is randomly generated.
 		for (int i = 0; i < sides; ++i) {
 			double calculatedRadius = radius * (1 - r.nextDouble() * radiusJitter);
 			vertexRadii.add(calculatedRadius);
 		}
 
+		// Same thing with the asteroid's rotation.
 		rotationSpeed = (r.nextDouble() - 0.5) * maximumRotationSpeed;
 
 		this.velocity = velocity;
@@ -63,6 +73,7 @@ public class AsteroidsAsteroid extends CircularGameObject {
 		double cameraZoom = rules.getCameraZoom() + getRadius();
 		Vector3 position = getPositionVector();
 
+		// The asteroid will only loop if it's been on screen before.
 		if (beenOnScreenBefore) {
 			if (position.x > cameraZoom) {
 				position.subtractSelf(new Vector3(2 * cameraZoom, 0.0, 0.0));

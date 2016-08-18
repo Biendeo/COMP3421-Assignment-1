@@ -17,9 +17,7 @@ public class AsteroidsGame {
 	private static final int windowHeight = 800;
 
 	/**
-	 * A simple example of how to use PolygonalGameObject, CircularGameObject and LineObject
-	 *
-	 * and also how to put together a simple scene using the game engine.
+	 * The main entry point to the Asteroids game.
 	 *
 	 * @param args
 	 */
@@ -31,6 +29,7 @@ public class AsteroidsGame {
 		// create a GLJPanel to draw on
 		GLJPanel panel = new GLJPanel(glcapabilities);
 
+		// Add my own game objects and set the depth buffer.
 		AsteroidsRules rules = new AsteroidsRules(GameObject.ROOT);
 		Camera camera = new Camera(GameObject.ROOT);
 		camera.setScale(new Vector3(rules.getCameraZoom(), rules.getCameraZoom(), rules.getCameraZoom()));

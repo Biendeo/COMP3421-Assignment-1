@@ -69,7 +69,7 @@ public class GameObject {
 	 *
 	 * New objects are created at the same location, orientation and scale as the parent.
 	 *
-	 * @param parent
+	 * @param parent The parent object.
 	 */
 	public GameObject(GameObject parent) {
 		this();
@@ -94,7 +94,7 @@ public class GameObject {
 	/**
 	 * Get the parent of this game object
 	 *
-	 * @return
+	 * @return The parent of this object.
 	 */
 	public GameObject getParent() {
 		return myParent;
@@ -103,7 +103,7 @@ public class GameObject {
 	/**
 	 * Get the children of this object
 	 *
-	 * @return
+	 * @return The children of this object.
 	 */
 	public List<GameObject> getChildren() {
 		return myChildren;
@@ -112,7 +112,7 @@ public class GameObject {
 	/**
 	 * Get the local rotation (in degrees)
 	 *
-	 * @return
+	 * @return The rotation angle.
 	 * @deprecated Use {@link #getRotationVector()} instead.
 	 */
 	public double getRotation() {
@@ -121,7 +121,7 @@ public class GameObject {
 
 	/**
 	 * Get the local rotation (in degrees).
-	 * @return
+	 * @return The rotation Vector.
 	 */
 	public Vector3 getRotationVector() {
 		// TODO: Remove this and try and get this normalised in memory.
@@ -135,7 +135,7 @@ public class GameObject {
 	/**
 	 * Set the local rotation (in degrees)
 	 *
-	 * @return
+	 * @param rotation The rotation angle.
 	 * @deprecated Use {@link #setRotationVector(Vector3)}.
 	 */
 	public void setRotation(double rotation) {
@@ -147,7 +147,7 @@ public class GameObject {
 	 * To use it similarly to the old {@link #setRotation(double)}, create the Vector3 object with
 	 * the same x and y properties as the current rotation, and change only the z axis.
 	 *
-	 * @param rotation
+	 * @param rotation The rotation vector.
 	 */
 	public void setRotationVector(Vector3 rotation) {
 		myRotation = rotation.clone();
@@ -156,7 +156,7 @@ public class GameObject {
 	/**
 	 * Rotate the object by the given angle (in degrees)
 	 *
-	 * @param angle
+	 * @param angle The rotation to add.
 	 * @deprecated Use {@link #rotate(Vector3)} instead.
 	 */
 	public void rotate(double angle) {
@@ -169,7 +169,7 @@ public class GameObject {
 	 * To use it similarly to the old {@link #rotate(double)}, create the Vector3 object with 0
 	 * in the x and y properties, and the rotation in the z property.
 	 *
-	 * @param rotation
+	 * @param rotation The local rotation to rotate by.
 	 */
 	public void rotate(Vector3 rotation) {
 		myRotation.addSelf(rotation);
@@ -178,7 +178,7 @@ public class GameObject {
 	/**
 	 * Get the local scale.
 	 *
-	 * @return
+	 * @return The local scale.
 	 * @deprecated Use {@link #getScaleVector()}. If you've been changing the x and y scale
 	 * independently, then this will only return the x scale.
 	 */
@@ -191,7 +191,7 @@ public class GameObject {
 	 * To use it similarly to the old {@link #getScale()}, grab the x property afterwards. This
 	 * relies on you scaling everything uniformly across the x and y axes.
 	 *
-	 * @return
+	 * @return The local scale vector.
 	 */
 	public Vector3 getScaleVector() {
 		return myScale.clone();
@@ -200,7 +200,7 @@ public class GameObject {
 	/**
 	 * Set the local scale
 	 *
-	 * @param scale
+	 * @param scale The scale to set to.
 	 * @deprecated Use {@link #setScale(Vector3)}.
 	 */
 	public void setScale(double scale) {
@@ -213,7 +213,7 @@ public class GameObject {
 	 * To use it similarly to the old {@link #setScale(double)}, just make sure that the x and y
 	 * properties are the same.
 	 *
-	 * @param scale
+	 * @param scale The scale vector.
 	 */
 	public void setScale(Vector3 scale) {
 		myScale = scale.clone();
@@ -222,7 +222,7 @@ public class GameObject {
 	/**
 	 * Multiply the scale of the object by the given factor
 	 *
-	 * @param factor
+	 * @param factor The factor to multiply by.
 	 */
 	public void scale(double factor) {
 		myScale.multiplySelf(factor);
@@ -231,7 +231,7 @@ public class GameObject {
 	/**
 	 * Multiply the scale of the object by the given factor
 	 *
-	 * @param factor
+	 * @param factor The scale to multiply by (each property of this Vector3 is multiplied by its corresponding property).
 	 */
 	public void scale(Vector3 factor) {
 		myScale.multiplySelf(factor);
@@ -240,7 +240,7 @@ public class GameObject {
 	/**
 	 * Get the local position of the object
 	 *
-	 * @return
+	 * @return The position in an array [x, y].
 	 * @deprecated Use {@link #getPositionVector()}.
 	 */
 	public double[] getPosition() {
@@ -256,7 +256,7 @@ public class GameObject {
 	 * To use this similarly to the old {@link #getPosition()}, just grab the x and y properties
 	 * from the Vector3 object.
 	 *
-	 * @return
+	 * @return The position vector.
 	 */
 	public Vector3 getPositionVector() {
 		return myTranslation.clone();
@@ -266,8 +266,8 @@ public class GameObject {
 	 * Set the local position of the object
 	 * This does not change its z property.
 	 *
-	 * @param x
-	 * @param y
+	 * @param x The x coord to set at.
+	 * @param y The y coord to set at.
 	 */
 	public void setPosition(double x, double y) {
 		myTranslation.x = x;
@@ -278,7 +278,7 @@ public class GameObject {
 	 * Set the local position of the object.
 	 * This changes its z property (unless you keep it the same).
 	 *
-	 * @param v
+	 * @param v The transform vector.
 	 */
 	public void setPosition(Vector3 v) {
 		myTranslation = v.clone();
@@ -287,8 +287,8 @@ public class GameObject {
 	/**
 	 * Move the object by the specified offset in local coordinates
 	 *
-	 * @param dx
-	 * @param dy
+	 * @param dx The x to move by.
+	 * @param dy The y to move by.
 	 */
 	public void translate(double dx, double dy) {
 		myTranslation.x += dx;
@@ -299,7 +299,7 @@ public class GameObject {
 	 * Moves the object by the specified vector.
 	 * Remember to set the z property to 0 if you don't want to change the depth.
 	 *
-	 * @param v
+	 * @param v The vector to move by.
 	 */
 	public void translate(Vector3 v) {
 		myTranslation.addSelf(v);
@@ -308,7 +308,7 @@ public class GameObject {
 	/**
 	 * Test if the object is visible
 	 *
-	 * @return
+	 * @return Whether the object is showing.
 	 */
 	public boolean isShowing() {
 		return amShowing;
@@ -318,7 +318,7 @@ public class GameObject {
 	 * Set the showing flag to make the object visible (true) or invisible (false).
 	 * This flag should also apply to all descendents of this object.
 	 *
-	 * @param showing
+	 * @param showing Whether the object should be showing.
 	 */
 	public void show(boolean showing) {
 		amShowing = showing;
@@ -340,7 +340,7 @@ public class GameObject {
 	 *
 	 * This does nothing in the base GameObject class. Override this in subclasses.
 	 *
-	 * @param gl
+	 * @param gl The GL object.
 	 */
 	public void drawSelf(GL2 gl) {
 		// do nothing
@@ -349,7 +349,7 @@ public class GameObject {
 	/**
 	 * Draw the object and all of its descendants recursively.
 	 *
-	 * @param gl
+	 * @param gl The GL object.
 	 */
 	public void draw(GL2 gl) {
 
@@ -380,7 +380,7 @@ public class GameObject {
 	/**
 	 * Compute the object's position in world coordinates
 	 *
-	 * @return a point in world coordinats in [x,y] form
+	 * @return a point in world coordinates in [x,y] form
 	 *
 	 * @deprecated Use {@link #getGlobalPositionVector()} and grab the x and y values.
 	 */

@@ -11,6 +11,8 @@ import java.awt.event.KeyListener;
 /**
  * The player object in the game.
  * It handles input, and collisions with asteroids.
+ *
+ * @author Thomas Moffet, z5061905
  */
 public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener {
 
@@ -32,6 +34,11 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 	private boolean movingRight;
 	private boolean shooting;
 
+	/**
+	 * Creates a new player.
+	 * @param parent The parent object.
+	 * @param rules A reference to the rules of the game.
+	 */
 	public AsteroidsPlayer(GameObject parent, AsteroidsRules rules) {
 		super(parent, hitboxPoints, null, null);
 		this.rules = rules;
@@ -49,7 +56,9 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 
 	@Override
 	public void update(double dt) {
+		// This only acts if it's showing.
 		if (isShowing()) {
+			// We process input, moving forward, and turning.
 			if (movingForward) {
 				double rotation = getRotationVector().z;
 				velocity.addSelf(new Vector3(-Math.sin(Math.toRadians(rotation)) * thrustSpeed * dt, Math.cos(Math.toRadians(rotation)) * thrustSpeed * dt));
@@ -64,8 +73,10 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 				rotate(new Vector3(0.0, 0.0, -turnSpeed * dt));
 			}
 
+			// We then translate the object.
 			translate(velocity.multiply(dt));
 
+			// And if the player hits the game boundaries, they'll loop back to the other side.
 			Vector3 position = getPositionVector();
 
 			double cameraZoom = rules.getCameraZoom() + 2;
@@ -86,6 +97,9 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 		}
 	}
 
+	/**
+	 * Fires a projectile if the player is alive.
+	 */
 	private void fireShot() {
 		if (isShowing()) {
 			rules.fireShot();
@@ -136,6 +150,9 @@ public class AsteroidsPlayer extends PolygonalGameObject implements KeyListener 
 		}
 	}
 
+	/**
+	 * Sets the player's position into where the game starts.
+	 */
 	public void resetPosition() {
 		velocity = new Vector3();
 		setPosition(rules.playerStartingPosition);

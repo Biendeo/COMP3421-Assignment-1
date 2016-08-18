@@ -6,7 +6,7 @@ import com.jogamp.opengl.GL2;
 /**
  * A game object with a circular shape.
  * 
- * @author Thomas Moffet
+ * @author Thomas Moffet, z5061905
  */
 public class CircularGameObject extends GameObject {
 	
@@ -17,10 +17,23 @@ public class CircularGameObject extends GameObject {
 	private double[] myFillColour;
 	private double[] myLineColour;
 
+	/**
+	 * Constructs a CircularGameObject with a radius of 1.0.
+	 * @param parent The parent object.
+	 * @param fillColour The fill colour.
+	 * @param lineColour The line colour.
+	 */
 	public CircularGameObject(GameObject parent, double[] fillColour, double[] lineColour) {
 		this(parent, 1.0, fillColour, lineColour);
 	}
 
+	/**
+	 * Constructs a CircularGameObject with given parameters.
+	 * @param parent The parent object.
+	 * @param radius The radius.
+	 * @param fillColour The fill colour.
+	 * @param lineColour The line colour.
+	 */
 	public CircularGameObject(GameObject parent, double radius, double[] fillColour, double[] lineColour) {
 		super(parent);
 
@@ -30,10 +43,18 @@ public class CircularGameObject extends GameObject {
 
 	}
 
+	/**
+	 * Gets the radius.
+	 * @return The radius.
+	 */
 	public double getRadius() {
 		return myRadius;
 	}
 
+	/**
+	 * Sets the radius.
+	 * @param radius The radius.
+	 */
 	public void setRadius(double radius) {
 		myRadius = radius;
 	}
@@ -41,7 +62,7 @@ public class CircularGameObject extends GameObject {
 	/**
 	 * Get the fill colour
 	 *
-	 * @return
+	 * @return The fill colour.
 	 */
 	public double[] getFillColour() {
 		return myFillColour;
@@ -61,7 +82,7 @@ public class CircularGameObject extends GameObject {
 	/**
 	 * Get the outline colour.
 	 *
-	 * @return
+	 * @return The outline colour.
 	 */
 	public double[] getLineColour() {
 		return myLineColour;
@@ -72,7 +93,7 @@ public class CircularGameObject extends GameObject {
 	 *
 	 * Setting the colour to null means the outline should not be drawn
 	 *
-	 * @param lineColour
+	 * @param lineColour The line colour.
 	 */
 	public void setLineColour(double[] lineColour) {
 		myLineColour = lineColour;

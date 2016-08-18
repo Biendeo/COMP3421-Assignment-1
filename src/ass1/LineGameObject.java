@@ -6,7 +6,7 @@ import com.jogamp.opengl.GL2;
 /**
  * A game object with a line shape.
  *
- * @author Thomas Moffet
+ * @author Thomas Moffet, z5061905
  */
 public class LineGameObject extends GameObject {
 
@@ -14,10 +14,24 @@ public class LineGameObject extends GameObject {
 	private Vector3 point2;
 	private double[] myLineColour;
 
+	/**
+	 * Creates a LineGameObject at (0.0, 0.0) and (1.0, 0.0).
+	 * @param parent The parent object.
+	 * @param lineColour The colour of the line.
+	 */
 	public LineGameObject(GameObject parent, double[] lineColour) {
 		this(parent, 0.0, 0.0, 1.0, 0.0, lineColour);
 	}
 
+	/**
+	 * Creates the LineGameObject using raw point values.
+	 * @param parent The parent object.
+	 * @param x1 The x coord of the first point.
+	 * @param y1 The y coord of the first point.
+	 * @param x2 The x coord of the second point.
+	 * @param y2 The y coord of the second point.
+	 * @param lineColour The colour of the line.
+	 */
 	public LineGameObject(GameObject parent, double x1, double y1, double x2, double y2, double[] lineColour) {
 		super(parent);
 
@@ -28,6 +42,13 @@ public class LineGameObject extends GameObject {
 
 	}
 
+	/**
+	 * Creates a LineGameObject using Vector3 objects for the points.
+	 * @param parent The parent object.
+	 * @param point1 The first point translation vector.
+	 * @param point2 The second point translation vector.
+	 * @param lineColour The colour of the line.
+	 */
 	public LineGameObject(GameObject parent, Vector3 point1, Vector3 point2, double[] lineColour) {
 		super(parent);
 
@@ -149,8 +170,6 @@ public class LineGameObject extends GameObject {
 	/**
 	 * if the fill colour is non-null, fill the polygon with this colour
 	 * if the line colour is non-null, draw the outline with this colour
-	 *
-	 * @see ass1.spec.GameObject#drawSelf(javax.media.opengl.GL2)
 	 */
 	@Override
 	public void drawSelf(GL2 gl) {

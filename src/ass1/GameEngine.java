@@ -32,9 +32,6 @@ public class GameEngine implements GLEventListener {
 		myCamera = camera;
 	}
 
-	/**
-	 * @see javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable)
-	 */
 	@Override
 	public void init(GLAutoDrawable drawable) {
 		// initialise myTime
@@ -75,6 +72,9 @@ public class GameEngine implements GLEventListener {
 		GameObject.ROOT.draw(gl);
 	}
 
+	/**
+	 * Updates every GameObject and computes the delta time for them.
+	 */
 	private void update() {
 
 		// compute the time since the last frame
@@ -92,6 +92,11 @@ public class GameEngine implements GLEventListener {
 		}
 	}
 
+	/**
+	 * Determines a list of objects that collides with a given point.
+	 * @param p The point to check [x, y].
+	 * @return The objects that collide with this point.
+	 */
 	public List<GameObject> collision(double[] p) {
 		List<GameObject> collidedObjects = new ArrayList<GameObject>();
 

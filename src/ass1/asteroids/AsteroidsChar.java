@@ -7,12 +7,23 @@ import ass1.math.Vector3;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A character that uses LineGameObjects.
+ * It's not very useful by itself, it's better with the AsteroidsString class.
+ *
+ * @author Thomas Moffet, z5061905
+ */
 public class AsteroidsChar extends GameObject {
 	private static final double[] lineColor = new double[]{1.0, 1.0, 1.0, 1.0};
 
 	private char letter;
 	private List<LineGameObject> lines;
 
+	/**
+	 * Creates a new character.
+	 * @param parent The parent object.
+	 * @param letter The letter to be made.
+	 */
 	public AsteroidsChar(GameObject parent, char letter) {
 		super(parent);
 		this.letter = letter;
@@ -20,6 +31,10 @@ public class AsteroidsChar extends GameObject {
 		createLetter(letter);
 	}
 
+	/**
+	 * Chooses the letter and creates the LineGameObjects to create it.
+	 * @param letter The letter to create.
+	 */
 	private void createLetter(char letter) {
 		switch (letter) {
 			case 'A':
