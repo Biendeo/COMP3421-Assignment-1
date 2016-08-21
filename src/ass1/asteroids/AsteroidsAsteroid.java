@@ -19,7 +19,7 @@ public class AsteroidsAsteroid extends CircularGameObject {
 	public static final double radiusJitter = 0.25;
 	public static final double[] fillColor = null;
 	public static final double[] lineColor = new double[]{1.0, 1.0, 1.0, 1.0};
-	public static final double maximumRotationSpeed = 10.0;
+	public static final double maximumRotationSpeed = 100.0;
 
 	public static final double minimumVelocity = 5.0;
 	public static final double maximumVelocity = 30.0;

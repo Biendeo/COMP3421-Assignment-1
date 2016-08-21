@@ -8,7 +8,7 @@ import com.jogamp.opengl.GL2;
  * A laser that is shot from the player. The laser is just a point in space.
  */
 public class AsteroidsLaser extends GameObject {
-	private static final double projectileSpeed = 20.0;
+	private static final double projectileSpeed = 50.0;
 	private static final double[] dotColor = new double[]{1.0, 1.0, 1.0, 1.0};
 	private static final double dotSize = 3.0;
 

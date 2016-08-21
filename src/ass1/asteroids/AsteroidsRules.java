@@ -280,11 +280,11 @@ public class AsteroidsRules extends GameObject {
 	private void spawnRandomAsteroid() {
 		Random r = new Random();
 
-		// The spawn distance is a fair distance away from the action.
-		final double spawnDistance = cameraZoom * 2 + 5;
-
 		// The size of the asteroid is randomised.
 		double size = r. nextDouble() * (AsteroidsAsteroid.maximumSize - AsteroidsAsteroid.minimumSize) + AsteroidsAsteroid.minimumSize;
+
+		// The spawn distance is a fair distance away from the action.
+		final double spawnDistance = cameraZoom * 2 + size;
 
 		// Same with its velocity magnitude.
 		double decidedVelocity = r.nextDouble() * (AsteroidsAsteroid.maximumVelocity - AsteroidsAsteroid.minimumVelocity) + AsteroidsAsteroid.minimumVelocity;
