@@ -12,7 +12,7 @@ import com.jogamp.opengl.util.FPSAnimator;
 public class AsteroidsGame {
 
 	private static final String windowTitle = "Asteroids";
-	private static final int windowFramerate = 144;
+	private static final int windowFramerate = 60;
 	private static final int windowWidth = 800;
 	private static final int windowHeight = 800;
 
